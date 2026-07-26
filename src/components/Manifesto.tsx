@@ -56,7 +56,7 @@ export default function Manifesto() {
               ].map((s) => (
                 <div key={s.l}>
                   <dd className="font-display text-[clamp(2.25rem,3.4vw,3.25rem)] font-semibold leading-none tracking-[-0.045em] text-white">
-                    <Counter to={s.v} prefix={s.prefix} suffix={s.suffix} />
+                    <Counter to={s.v} prefix={s.prefix} suffix={s.suffix} replay />
                   </dd>
                   <dt className="mt-3 max-w-[22ch] text-[0.8125rem] leading-snug text-white/50">{s.l}</dt>
                 </div>

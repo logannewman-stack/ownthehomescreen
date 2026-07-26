@@ -1,7 +1,7 @@
 import Build from './components/Build'
 import ContactModal from './components/ContactModal'
 import CTA from './components/CTA'
-import { ScrollProgress } from './components/Effects'
+import { CursorTrail, ScrollProgress } from './components/Effects'
 import Engagements from './components/Engagements'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import Footer from './components/Footer'
@@ -20,6 +20,9 @@ export default function App() {
     <div className="grain relative min-h-screen bg-white">
       <ErrorBoundary>
         <ScrollProgress />
+      </ErrorBoundary>
+      <ErrorBoundary>
+        <CursorTrail />
       </ErrorBoundary>
       <Nav />
       <main className="relative">

@@ -154,7 +154,11 @@ function LitWord({
  * Numbers
  * ------------------------------------------------------------------ */
 
-/** Counts to its value once on screen. Proportional figures by design. */
+/**
+ * Counts to its value when it reaches the screen. Proportional figures by
+ * design. With `replay`, it rewinds on the way out and counts again on the way
+ * back in, so the number performs on every pass rather than once per page load.
+ */
 export function Counter({
   to,
   from = 0,
@@ -164,6 +168,7 @@ export function Counter({
   duration = 1.9,
   className = '',
   group = false,
+  replay = false,
 }: {
   to: number
   from?: number
@@ -173,9 +178,10 @@ export function Counter({
   duration?: number
   className?: string
   group?: boolean
+  replay?: boolean
 }) {
   const ref = useRef<HTMLSpanElement>(null)
-  const inView = useInView(ref, { once: true, margin: '-15%' })
+  const inView = useInView(ref, { once: !replay, margin: '-12%' })
   const reduce = useReducedMotion()
   const mv = useMotionValue(from)
   const text = useTransform(mv, (v) => {
@@ -186,14 +192,18 @@ export function Counter({
   })
 
   useEffect(() => {
-    if (!inView) return
     if (reduce) {
-      mv.set(to)
+      if (inView) mv.set(to)
+      return
+    }
+    if (!inView) {
+      // Rewind so the next entrance counts up from the start again.
+      if (replay) mv.set(from)
       return
     }
     const controls = animate(mv, to, { duration, ease: [0.16, 1, 0.3, 1] })
     return () => controls.stop()
-  }, [inView, to, duration, mv, reduce])
+  }, [inView, to, from, duration, mv, reduce, replay])
 
   return (
     <motion.span ref={ref} className={className}>

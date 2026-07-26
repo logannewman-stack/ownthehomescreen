@@ -374,6 +374,7 @@ function StatTile({ label, to, decimals = 0, prefix = '', suffix = '', note, spa
           decimals={decimals}
           prefix={prefix}
           suffix={suffix}
+          replay
           className="font-display text-[clamp(2.5rem,3.4vw,3.25rem)] font-semibold leading-[0.9] tracking-[-0.045em] text-ink-900"
         />
         {spark ? <Sparkline values={spark} w={72} h={30} className="mb-1.5" /> : null}
@@ -384,10 +385,13 @@ function StatTile({ label, to, decimals = 0, prefix = '', suffix = '', note, spa
   )
 }
 
-/** Columns: ≤24px thick, 4px rounded caps, 2px surface gaps, last one in ink. */
+/**
+ * Columns: ≤24px thick, 4px rounded caps, 2px surface gaps, last one in ink.
+ * Grows and retracts with the tile's counter so the whole card replays.
+ */
 function MiniBars({ values }: { values: number[] }) {
   const ref = useRef<HTMLDivElement>(null)
-  const inView = useInView(ref, { once: true, margin: '-12%' })
+  const inView = useInView(ref, { margin: '-12%' })
   const reduce = useReducedMotion()
   return (
     <div ref={ref} className="mb-1.5 flex h-[30px] items-end gap-[2px]">
@@ -400,8 +404,8 @@ function MiniBars({ values }: { values: number[] }) {
             background: i === values.length - 1 ? '#1d1d1f' : '#c7c7cc',
           }}
           initial={{ scaleY: 0 }}
-          animate={reduce || inView ? { scaleY: 1 } : undefined}
-          transition={{ duration: 0.7, delay: i * 0.05, ease: [0.16, 1, 0.3, 1] }}
+          animate={{ scaleY: reduce || inView ? 1 : 0 }}
+          transition={{ duration: 0.7, delay: inView ? i * 0.05 : 0, ease: [0.16, 1, 0.3, 1] }}
         />
       ))}
     </div>
