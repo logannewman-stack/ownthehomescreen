@@ -1,8 +1,8 @@
-import { motion, useMotionValueEvent, useReducedMotion, useScroll, useTransform, type MotionValue } from 'framer-motion'
+import { motion, useMotionValueEvent, useReducedMotion, useTransform, type MotionValue } from 'framer-motion'
 import { useRef, useState, type ReactNode } from 'react'
 import { linePath } from '../lib/chart'
-import { APP_AOV, APP_RATE, LTV_RATIO, WEB_RATE } from '../lib/model'
-import { stops } from '../lib/motion'
+import { APP_AOV, APP_RATE, FREQ_LIFT_PCT, LTV_RATIO, OPEN_RATES, OPEN_RATE_AXIS_MAX, WEB_RATE, WEEK1_INSTALLS } from '../lib/model'
+import { stops, useSmoothProgress } from '../lib/motion'
 import { BrandIcon, Button, Counter, Eyebrow, TextLink } from './ui'
 
 /* ------------------------------------------------------------------ *
@@ -45,14 +45,14 @@ const MOMENTS: Moment[] = [
     when: 'Month 8',
     tick: 'M8',
     title: 'They stay.',
-    body: 'Customers drift when coming back takes effort. Yours are one tap away, so they don’t. Eight months in, app customers still order at 93% of their original pace — everyone else is down to 59%, and falling.',
+    body: 'Customers drift when coming back takes effort. Yours are one tap away, so they don’t. Eight months in, app customers are still ordering at 93% of the pace a new customer sets — everyone else is down to 59%, and falling.',
     visual: (on) => <StayVisual on={on} />,
   },
   {
     when: 'Month 12',
     tick: 'M12',
     title: 'You realize what you own.',
-    body: `Revenue per customer is up ${LTV_RATIO.toFixed(2)}×. Your busiest channel costs nothing per send. And the thing making it all compound is yours outright — after your people, the app is your business’s biggest asset.`,
+    body: `Revenue per customer is ${LTV_RATIO.toFixed(2)}× what it was. Your busiest channel costs nothing per send. And the thing making it all compound is yours outright — after your people, the hardest-working asset you own.`,
     finale: true,
   },
 ]
@@ -66,10 +66,13 @@ export default function FirstYear() {
 
 function Cinema() {
   const ref = useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end end'] })
-  const [active, setActive] = useState(0)
+  // Spring-smoothed like the journey, so a mid-pin browser-chrome resize
+  // glides instead of snapping a crossfade. Starts at -1: nothing counts or
+  // lights up until the pin actually engages.
+  const p = useSmoothProgress(ref, ['start start', 'end end'])
+  const [active, setActive] = useState(-1)
 
-  useMotionValueEvent(scrollYProgress, 'change', (v) => {
+  useMotionValueEvent(p, 'change', (v) => {
     const i = Math.min(N - 1, Math.max(0, Math.floor(v * N + 0.0001)))
     setActive((prev) => (prev === i ? prev : i))
   })
@@ -123,7 +126,7 @@ function Cinema() {
           {/* The moments */}
           <div className="relative min-h-0 flex-1">
             {MOMENTS.map((m, i) => (
-              <Beat key={m.when} i={i} p={scrollYProgress} live={active === i}>
+              <Beat key={m.when} i={i} p={p} live={active === i}>
                 {m.finale ? (
                   <div className="shell flex h-full flex-col items-center justify-center pb-[2svh] text-center">
                     <p className="text-[0.6875rem] font-semibold uppercase tracking-[0.2em] text-white/40">
@@ -145,7 +148,7 @@ function Cinema() {
                     </div>
                   </div>
                 ) : (
-                  <div className="shell grid h-full content-center items-center gap-8 pb-[2svh] lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:gap-20">
+                  <div className="shell grid h-full [align-content:safe_center] items-center gap-6 pb-[2svh] sm:gap-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:gap-20">
                     <div>
                       <p className="text-[0.6875rem] font-semibold uppercase tracking-[0.2em] text-white/40">
                         {m.when}
@@ -195,7 +198,10 @@ function Beat({ children, i, p, live }: { children: ReactNode; i: number; p: Mot
   const y = useTransform(p, win, [first ? 0 : 30, first ? 0 : 30, 0, 0, 0, last ? 0 : -30, last ? 0 : -30])
 
   return (
-    <motion.div style={{ opacity, y, pointerEvents: live ? 'auto' : 'none' }} className="absolute inset-0">
+    // `inert` removes the invisible beats from tab order and the a11y tree —
+    // opacity + pointer-events alone left the finale's links Tab-reachable
+    // while fully invisible.
+    <motion.div inert={!live} style={{ opacity, y, pointerEvents: live ? 'auto' : 'none' }} className="absolute inset-0">
       {children}
     </motion.div>
   )
@@ -218,7 +224,7 @@ function LaunchVisual({ on }: { on: boolean }) {
         initial={false}
         animate={{ opacity: on ? 1 : 0.4, y: on ? 0 : 10 }}
         transition={spring}
-        className="rounded-2xl border border-white/10 bg-white/[0.06] p-5 backdrop-blur-sm"
+        className="rounded-2xl border border-white/10 bg-white/[0.06] p-5"
       >
         <div className="flex items-center gap-3">
           <BrandIcon size={34} className="rounded-[9px]" tone="light" />
@@ -239,10 +245,10 @@ function LaunchVisual({ on }: { on: boolean }) {
         </div>
       </motion.div>
 
-      <div className="mt-6 flex items-end justify-between">
+      <div className="mt-4 flex items-end justify-between [@media(min-height:760px)]:mt-6">
         <div>
           <p className="num font-display text-[clamp(2.5rem,4.6vw,3.75rem)] font-semibold leading-none tracking-[-0.04em] text-white">
-            {seen.current ? <Counter to={1214} group duration={2.2} /> : '0'}
+            {seen.current ? <Counter to={WEEK1_INSTALLS} group duration={2.2} /> : '0'}
           </p>
           <p className="mt-2 text-[0.75rem] font-medium uppercase tracking-[0.14em] text-white/40">
             installs in week one
@@ -277,7 +283,7 @@ function HabitVisual({ on }: { on: boolean }) {
   const weeks = [38, 42, 40, 50, 56, 62, 74, 100]
   return (
     <div className="mx-auto w-full max-w-[420px]">
-      <div className="flex h-[150px] items-end gap-[6px]">
+      <div className="flex h-[110px] items-end gap-[6px] [@media(min-height:760px)]:h-[150px]">
         {weeks.map((h, i) => (
           <motion.span
             key={i}
@@ -295,9 +301,9 @@ function HabitVisual({ on }: { on: boolean }) {
         </span>
         <span className="num text-[0.75rem] text-white/35">weeks 1–8</span>
       </div>
-      <div className="mt-5 flex flex-wrap gap-2">
+      <div className="mt-4 hidden flex-wrap gap-2 [@media(min-height:720px)]:flex">
         <span className="rounded-full border border-white/15 px-3.5 py-1.5 text-[0.75rem] font-medium text-white/85">
-          +38% repeat orders
+          +{FREQ_LIFT_PCT}% more orders a year
         </span>
         <span className="rounded-full border border-white/15 px-3.5 py-1.5 text-[0.75rem] font-medium text-white/85">
           ${Math.round(APP_AOV)} average basket, up from $58
@@ -309,11 +315,7 @@ function HabitVisual({ on }: { on: boolean }) {
 
 /** Month 3: what it now costs to reach them. */
 function PushVisual({ on }: { on: boolean }) {
-  const channels = [
-    { n: 'Push, from your app', v: 20.4, own: true },
-    { n: 'Email', v: 3.2, own: false },
-    { n: 'Paid social', v: 1.1, own: false },
-  ]
+  const channels = OPEN_RATES.map((c) => ({ n: c.own ? 'Push, from your app' : c.name, v: c.value, own: c.own }))
   return (
     <div className="mx-auto w-full max-w-[420px]">
       <div className="flex items-end gap-4">
@@ -342,7 +344,7 @@ function PushVisual({ on }: { on: boolean }) {
               <motion.div
                 initial={false}
                 animate={{ scaleX: on ? 1 : 0 }}
-                style={{ width: `${(c.v / 25) * 100}%`, originX: 0 }}
+                style={{ width: `${(c.v / OPEN_RATE_AXIS_MAX) * 100}%`, originX: 0 }}
                 transition={{ ...spring, delay: on ? 0.15 + i * 0.12 : 0 }}
                 className={`h-full rounded-r-[3px] ${c.own ? 'bg-white' : 'bg-[#5a5a5e]'}`}
               />
@@ -350,6 +352,7 @@ function PushVisual({ on }: { on: boolean }) {
           </div>
         ))}
       </div>
+      <p className="mt-4 text-[0.6875rem] leading-snug text-white/30">Commonly reported industry averages.</p>
     </div>
   )
 }
@@ -381,7 +384,7 @@ function StayVisual({ on }: { on: boolean }) {
       </svg>
       <div className="mt-3 flex items-baseline justify-between border-t border-white/10 pt-3">
         <span className="text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-white/40">
-          Share of original order pace
+          Order pace vs. a new customer’s first month
         </span>
         <span className="num text-[0.75rem] text-white/35">months 1–12</span>
       </div>

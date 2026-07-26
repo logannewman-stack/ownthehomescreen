@@ -36,7 +36,7 @@ const ITEMS: Item[] = [
     title: 'A reason to come back on a Tuesday.',
     body: 'Points, streaks and tiers that make the next visit feel earned. Progress a customer can see is progress a customer finishes — and every reward is a scheduled return visit.',
     points: ['Points, tiers and streaks', 'Rewards that expire on purpose', 'Referral credit built in'],
-    outcome: '+38% repeat purchase rate',
+    outcome: '+38% more orders a year',
     screen: <RewardsScreen />,
   },
   {
@@ -59,7 +59,7 @@ const ITEMS: Item[] = [
     kicker: 'Push',
     title: 'A channel you own, not rent.',
     body: 'Push arrives on the lock screen. Email arrives in Promotions, three days late, if at all. Once the app is installed you stop paying, every single time, to reach people who already chose you.',
-    points: ['Lock-screen reach', 'Segmented by real behaviour', 'No media spend, no algorithm'],
+    points: ['Lock-screen reach', 'Segmented by real behavior', 'No media spend, no algorithm'],
     outcome: 'Roughly 6× the open rate of email',
     screen: <LockScreen />,
   },
@@ -82,7 +82,7 @@ export default function Showcase() {
           <Eyebrow>The app</Eyebrow>
           <h2 className="type-1 mt-6 text-balance text-ink-900">Six screens that bring them back.</h2>
           <p className="lede mt-6 max-w-[50ch]">
-            Ordering, loyalty, booking, payments and push — the work of a loyalty programme, a call centre
+            Ordering, loyalty, booking, payments and push — the work of a loyalty program, a call center
             and a marketing budget, in one app. Every build is designed around your business, not a
             template; this is the shape it usually takes.
           </p>

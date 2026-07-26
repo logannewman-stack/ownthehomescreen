@@ -9,7 +9,7 @@ const STEPS = [
     when: 'Week one',
     short: 'Week 1',
     title: 'Blueprint',
-    body: 'We map how your customers actually come back — the systems you run, the behaviours worth engineering, the revenue sitting in your repeat rate. You leave with a spec, a fixed price, and the growth model built on your own order data.',
+    body: 'We map how your customers actually come back — the systems you run, the habits worth building, the revenue sitting in your repeat rate. You leave with a spec, a fixed price, and the growth model built on your own order data.',
     deliver: ['Customer journey map', 'Fixed scope and price', 'Revenue model on your numbers'],
   },
   {
@@ -17,7 +17,7 @@ const STEPS = [
     when: 'Weeks two to three',
     short: 'Weeks 2–3',
     title: 'Design',
-    body: 'Every screen designed to your brand — typography, motion, icon, the lot. A clickable prototype lands on your own phone before any production code exists, and we iterate until it feels inevitable.',
+    body: 'Every screen designed to your brand — typography, motion, icon, all of it. A clickable prototype lands on your own phone before any production code exists, and we iterate with you until it feels exactly right.',
     deliver: ['Full visual design', 'Clickable prototype', 'App icon and store assets'],
   },
   {
@@ -49,6 +49,7 @@ const LEAD = 0.05
 const TAIL = 0.05
 
 const clamp01 = (v: number) => Math.min(1, Math.max(0, v))
+const MQ = '(max-width: 1023px)'
 
 export default function Process() {
   const reduce = useReducedMotion()
@@ -64,9 +65,11 @@ function Journey() {
   const ref = useRef<HTMLDivElement>(null)
   const p = useSmoothProgress(ref, ['start start', 'end end'])
 
-  const [geo, setGeo] = useState(DESK)
+  // Lazy init so the first painted frame already has the right geometry —
+  // useState(DESK) + effect meant one desktop-geometry frame on phones.
+  const [geo, setGeo] = useState(() => (window.matchMedia(MQ).matches ? MOB : DESK))
   useEffect(() => {
-    const mq = window.matchMedia('(max-width: 1023px)')
+    const mq = window.matchMedia(MQ)
     const apply = () => setGeo(mq.matches ? MOB : DESK)
     apply()
     mq.addEventListener('change', apply)
@@ -94,7 +97,7 @@ function Journey() {
 
   return (
     <Section id="process" tone="mist">
-      <div ref={ref} className="relative" style={{ height: `${N * 92}vh` }}>
+      <div ref={ref} className="relative" style={{ height: `${N * 92}svh` }}>
         <div className="sticky top-0 flex h-[100svh] flex-col overflow-hidden pb-[max(4svh,24px)] pt-[72px]">
           {/* Header stays put while the world moves underneath it */}
           <div className="shell flex shrink-0 items-end justify-between gap-6">
@@ -126,7 +129,7 @@ function Journey() {
                   always reaching exactly the centre of the screen */}
               <div className="absolute bottom-[15%] left-0 h-px bg-black/10" style={{ width: `${trackW}vw` }} />
               <motion.div
-                className="absolute bottom-[15%] left-0 h-[2px] origin-left bg-ink-900"
+                className="absolute bottom-[15%] left-0 h-[2px] origin-left bg-ink-900 will-change-transform"
                 style={{ width: `${trackW}vw`, scaleX: fillScale, marginBottom: -0.5 }}
               />
             </motion.div>
@@ -170,13 +173,13 @@ function Panel({
       <motion.span
         aria-hidden="true"
         style={{ x: ghostX, WebkitTextStroke: '1.5px rgba(29,29,31,0.09)' }}
-        className="pointer-events-none absolute -top-[2%] left-0 select-none font-display text-[clamp(7.5rem,17vw,13rem)] font-semibold leading-none text-transparent"
+        className="pointer-events-none absolute -top-[2%] left-0 select-none font-display text-[clamp(7.5rem,17vw,13rem)] font-semibold leading-none text-transparent will-change-transform"
       >
         {s.n}
       </motion.span>
 
       {/* Station content */}
-      <motion.div style={{ opacity, y }} className="flex h-full flex-col justify-center pb-[19%]">
+      <motion.div style={{ opacity, y }} className="flex h-full flex-col justify-center pb-[19%] will-change-[transform,opacity]">
         <p className="text-[0.6875rem] font-semibold uppercase tracking-[0.2em] text-faint">{s.when}</p>
         <h3 className="mt-3 font-display text-[clamp(1.75rem,3vw,2.625rem)] font-semibold leading-[1.05] tracking-[-0.035em] text-ink-900">
           {s.title}

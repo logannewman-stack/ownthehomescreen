@@ -2,13 +2,7 @@ import { motion, useInView, useReducedMotion } from 'framer-motion'
 import { useRef } from 'react'
 import { Counter, Eyebrow, Reveal, ScrollLit } from './ui'
 
-/** Reported open / engagement rates by channel. Emphasis on the one you own. */
-const CHANNELS = [
-  { name: 'Push notification', value: 20.4, own: true },
-  { name: 'Email', value: 3.2, own: false },
-  { name: 'Paid social', value: 1.1, own: false },
-]
-const AXIS_MAX = 25
+import { OPEN_RATES as CHANNELS, OPEN_RATE_AXIS_MAX as AXIS_MAX } from '../lib/model'
 
 export default function Manifesto() {
   return (

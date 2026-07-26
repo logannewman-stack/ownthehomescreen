@@ -84,7 +84,7 @@ export default function Hero() {
 
             {/* The proof, arriving once the product is whole */}
             <motion.div style={{ opacity: proofOpacity }} className="pointer-events-none absolute inset-0 hidden lg:block">
-              <Chip className="-left-[92%] top-[10%]" p={p} drift={-30} label="Repeat purchase rate" value="+38%" />
+              <Chip className="-left-[92%] top-[10%]" p={p} drift={-30} label="Order frequency" value="+38%" />
               <Chip className="-right-[90%] top-[36%]" p={p} drift={24} label="Lifetime value" value="1.55×" />
               <Chip className="-left-[84%] top-[64%]" p={p} drift={40} label="Orders per year" value="+3.1" />
             </motion.div>
@@ -99,7 +99,7 @@ export default function Hero() {
           <div className="shell">
             <div className="grid grid-cols-3 divide-x divide-black/[0.07] rounded-2xl border border-black/[0.06] bg-white/85 py-4 shadow-lift backdrop-blur-xl">
               {[
-                { v: '+38%', l: 'Repeat rate' },
+                { v: '+38%', l: 'Order frequency' },
                 { v: '1.55×', l: 'Lifetime value' },
                 { v: '+3.1', l: 'Orders a year' },
               ].map((s) => (

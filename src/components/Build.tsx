@@ -30,7 +30,7 @@ const CAPABILITIES = [
   {
     icon: 'bell',
     title: 'Push and lifecycle',
-    body: 'Segmented campaigns triggered by real behaviour: lapsed, loyal, nearly-due, cart left open.',
+    body: 'Segmented campaigns triggered by real behavior: lapsed, loyal, nearly-due, cart left open.',
   },
   {
     icon: 'gear',

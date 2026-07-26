@@ -23,7 +23,7 @@ const TIERS = [
       'Everything in Signature',
       'POS, CRM and inventory integrations',
       'Memberships and prepaid balances',
-      'Segmentation on real behaviour',
+      'Segmentation on real behavior',
       'Referral and win-back engines',
       'Quarterly roadmap and releases',
       'Priority support',

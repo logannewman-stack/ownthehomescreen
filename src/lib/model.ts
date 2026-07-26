@@ -34,3 +34,17 @@ export const WEB = cumulative(WEB_RATE, AOV)
 export const APP_ORDERS = APP_RATE.reduce((a, b) => a + b, 0)
 export const WEB_ORDERS = WEB_RATE.reduce((a, b) => a + b, 0)
 export const LTV_RATIO = APP[12] / WEB[12]
+
+/** The year-one order-frequency lift, as a whole percentage (38). */
+export const FREQ_LIFT_PCT = Math.round((APP_ORDERS / WEB_ORDERS - 1) * 100)
+
+/** Illustrative week-one installs when the launch email lands on a full list. */
+export const WEEK1_INSTALLS = 1214
+
+/** Commonly reported open rates by channel — quoted by Manifesto and the first-year story. */
+export const OPEN_RATES = [
+  { name: 'Push notification', value: 20.4, own: true },
+  { name: 'Email', value: 3.2, own: false },
+  { name: 'Paid social', value: 1.1, own: false },
+] as const
+export const OPEN_RATE_AXIS_MAX = 25

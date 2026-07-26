@@ -16,6 +16,7 @@ import {
   APP_ORDERS,
   APP_RATE,
   BASKET_LIFT,
+  FREQ_LIFT_PCT,
   LTV_RATIO,
   WEB,
   WEB_ORDERS,
@@ -389,11 +390,11 @@ type Tile = {
 
 const TILES: Tile[] = [
   {
-    label: 'Repeat purchase rate',
-    to: 38,
+    label: 'Order frequency',
+    to: FREQ_LIFT_PCT,
     prefix: '+',
     suffix: '%',
-    note: 'App customers who buy again inside 90 days',
+    note: `App customers place ${FREQ_LIFT_PCT}% more orders across the year`,
     spark: [22, 26, 25, 31, 34, 33, 39, 44, 48, 52, 58, 63],
   },
   {
