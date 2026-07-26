@@ -1,0 +1,229 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Inter:wght@400;450;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Never a horizontal scrollbar from wide set-pieces — but `clip` (not hidden)
+     keeps the root a non-scroll container so position: sticky still works. */
+  overflow-x: clip;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: #ffffff;
+  color: #1d1d1f;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  font-feature-settings: 'cv11', 'ss01';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+#root {
+  position: relative;
+  width: 100%;
+}
+
+::selection {
+  background: #1d1d1f;
+  color: #ffffff;
+}
+
+::-webkit-scrollbar {
+  width: 11px;
+}
+::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+::-webkit-scrollbar-thumb {
+  background: #d2d2d7;
+  border: 3px solid #ffffff;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #b0b0b6;
+}
+
+@layer components {
+  /* Frosted navigation / overlay panels — Apple's signature translucency */
+  .frost {
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+  }
+
+  .frost-dark {
+    background: rgba(10, 10, 12, 0.72);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+  }
+
+  /* Hairline rules — 1px at any DPR */
+  .hairline {
+    border-color: rgba(0, 0, 0, 0.09);
+  }
+  .hairline-light {
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  /* Section shells */
+  .shell {
+    @apply mx-auto w-full max-w-[1240px] px-6 sm:px-8 lg:px-12;
+  }
+
+  /* Display type presets */
+  .type-hero {
+    font-family: 'Inter Tight', -apple-system, system-ui, sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.045em;
+    line-height: 0.94;
+    font-size: clamp(2.9rem, 8.6vw, 7.5rem);
+  }
+  .type-1 {
+    font-family: 'Inter Tight', -apple-system, system-ui, sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 1.02;
+    font-size: clamp(2.0625rem, 5.2vw, 4.75rem);
+  }
+  .type-2 {
+    font-family: 'Inter Tight', -apple-system, system-ui, sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    line-height: 1.05;
+    font-size: clamp(1.75rem, 3.2vw, 2.75rem);
+  }
+  .type-3 {
+    font-family: 'Inter Tight', -apple-system, system-ui, sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+    font-size: clamp(1.25rem, 1.7vw, 1.5rem);
+  }
+  .lede {
+    @apply text-mute;
+    font-size: clamp(1.0625rem, 1.45vw, 1.375rem);
+    line-height: 1.5;
+    letter-spacing: -0.011em;
+    font-weight: 400;
+  }
+}
+
+@layer utilities {
+  /* The phone screen is a query container so every pixel inside it is
+     expressed in cqw and scales perfectly at any device size / DPR. */
+  .screen-q {
+    container-type: inline-size;
+  }
+
+  .num {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .mask-x {
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  }
+
+  .mask-b {
+    -webkit-mask-image: linear-gradient(180deg, #000 58%, transparent 98%);
+    mask-image: linear-gradient(180deg, #000 58%, transparent 98%);
+  }
+}
+
+/* Range inputs — hairline track, ink thumb, filled portion driven by --pct */
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 22px;
+  background: transparent;
+  cursor: pointer;
+}
+.slider::-webkit-slider-runnable-track {
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    #1d1d1f 0%,
+    #1d1d1f var(--pct, 50%),
+    rgba(0, 0, 0, 0.13) var(--pct, 50%),
+    rgba(0, 0, 0, 0.13) 100%
+  );
+}
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  margin-top: -10px;
+  height: 22px;
+  width: 22px;
+  border: none;
+  border-radius: 999px;
+  background: #1d1d1f;
+  box-shadow: 0 3px 10px -2px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.slider::-webkit-slider-thumb:active {
+  transform: scale(1.14);
+}
+.slider::-moz-range-track {
+  height: 2px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.13);
+}
+.slider::-moz-range-progress {
+  height: 2px;
+  border-radius: 999px;
+  background: #1d1d1f;
+}
+.slider::-moz-range-thumb {
+  height: 22px;
+  width: 22px;
+  border: none;
+  border-radius: 999px;
+  background: #1d1d1f;
+  box-shadow: 0 3px 10px -2px rgba(0, 0, 0, 0.4);
+}
+.slider:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 5px rgba(0, 0, 0, 0.12);
+}
+.slider:focus-visible::-moz-range-thumb {
+  box-shadow: 0 0 0 5px rgba(0, 0, 0, 0.12);
+}
+
+/* Very fine paper grain — reads as luxury print, invisible as texture */
+.grain::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
