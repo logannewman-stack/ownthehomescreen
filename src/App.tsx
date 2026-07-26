@@ -27,9 +27,9 @@ export default function App() {
         <Hero />
         <Metrics />
         <Showcase />
-        <Manifesto />
         <Process />
         <FirstYear />
+        <Manifesto />
         <Build />
         <Model />
         <Proof />
