@@ -27,7 +27,6 @@ export default function App() {
       <Nav />
       <main className="relative">
         <Hero />
-        <Industries />
         <Metrics />
         <Showcase />
         <Manifesto />
@@ -36,6 +35,8 @@ export default function App() {
         <Model />
         <Proof />
         <Engagements />
+        {/* A quiet "who this is for" band, right before the close */}
+        <Industries />
         <CTA />
       </main>
       <Footer />

@@ -80,7 +80,7 @@ export default function Hero() {
             {/* The proof, arriving once the product is whole */}
             <motion.div style={{ opacity: proofOpacity }} className="pointer-events-none absolute inset-0 hidden lg:block">
               <Chip className="-left-[92%] top-[10%]" p={p} drift={-30} label="Repeat purchase rate" value="+38%" />
-              <Chip className="-right-[90%] top-[36%]" p={p} drift={24} label="Lifetime value" value="2.8×" />
+              <Chip className="-right-[90%] top-[36%]" p={p} drift={24} label="Lifetime value" value="1.55×" />
               <Chip className="-left-[84%] top-[64%]" p={p} drift={40} label="Orders per year" value="+3.1" />
             </motion.div>
           </motion.div>

@@ -2,16 +2,21 @@ import { motion, useSpring, useTransform } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { Button, Eyebrow, Reveal, Section } from './ui'
 
-/* The assumptions, stated in the open. Change them here and the page follows. */
+/*
+ * The assumptions, stated in the open. Change them here and the page follows.
+ * These are the same two behavioural lifts the results chart is built from
+ * (8.1 → 11.2 orders is +38%, and a 12% larger basket), so the calculator and
+ * the chart agree: 1.38 × 1.12 = 1.55× the revenue per app customer.
+ */
 const ADOPTION = 0.35 // share of your customers who install within a year
-const FREQ_LIFT = 0.28 // installed customers order this much more often
+const FREQ_LIFT = 0.38 // installed customers order this much more often
 const AOV_LIFT = 0.12 // and spend this much more per order
 
 const money = (n: number) => `$${Math.round(n).toLocaleString('en-US')}`
 
 export default function Model() {
   const [customers, setCustomers] = useState(4000)
-  const [aov, setAov] = useState(42)
+  const [aov, setAov] = useState(58)
   const [freq, setFreq] = useState(8)
 
   const adopters = customers * ADOPTION

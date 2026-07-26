@@ -77,10 +77,18 @@ src/
 
 ## Before this goes live
 
-- **Numbers.** The retention, LTV, order-frequency and open-rate figures are an
-  illustrative model built from published app-versus-web benchmarks, and the page
-  says so in three places. Swap in your own measured results as soon as you have
-  them, and keep a disclaimer while they're modelled.
+- **Numbers — one model, one place to change it.** The results section derives every
+  figure it shows from four constants at the top of `Metrics.tsx`: a `$58` average
+  order value, a `12%` larger in-app basket, and the two monthly order-rate arrays
+  (`8.1` orders a year without the app against `11.2` with it). The curve, the
+  endpoint labels, the four stat tiles and the `1.55×` lifetime-value claim are all
+  computed from those — change the ticket size and the whole section follows, and
+  nothing can drift out of agreement. `Model.tsx` uses the same two lifts
+  (`FREQ_LIFT` 0.38, `AOV_LIFT` 0.12), so the calculator lands on the same 1.55×.
+  The order frequencies come from published app-versus-web benchmarks, not from
+  measured client results — the page says so, and the hero chip in `Hero.tsx` is the
+  one figure still hard-coded, so update it alongside. Swap in your own numbers as
+  soon as you have them, and keep a disclaimer while they are modelled.
 - **Timelines and tiers.** The nine-week schedule in `Process.tsx` and the three
   engagement tiers in `Engagements.tsx` are drafts — confirm they match what you
   actually sell.

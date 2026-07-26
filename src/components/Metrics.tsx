@@ -6,13 +6,46 @@ import { Counter, Eyebrow, Reveal, Section, Sparkline } from './ui'
 
 /* ------------------------------------------------------------------ *
  * The model. One illustrative cohort, two paths.
+ *
+ * Every number in this section is derived from the four constants below rather
+ * than typed in, so the curve, the endpoint labels and the stat tiles can never
+ * drift apart — and the assumptions can be stated on the chart itself.
  * ------------------------------------------------------------------ */
 
-const MONTHS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-const APP = [95, 205, 330, 455, 585, 705, 820, 930, 1035, 1120, 1195, 1260, 1310]
-const WEB = [90, 165, 228, 280, 322, 356, 384, 407, 426, 441, 452, 462, 470]
+/** Average order value, and the larger basket an app customer tends to build. */
+const AOV = 58
+const BASKET_LIFT = 0.12
+const APP_AOV = AOV * (1 + BASKET_LIFT)
 
-const Y_MAX = 1500
+/**
+ * Orders per month per acquired customer. The app cohort holds its rate; the
+ * web-and-email cohort decays as the cohort lapses, which is what flattens its
+ * curve. Totals: 11.2 orders against 8.1 — the +3.1 in the tiles below.
+ */
+const APP_RATE = [0.95, 0.95, 0.95, 0.94, 0.94, 0.93, 0.93, 0.93, 0.92, 0.92, 0.92, 0.92]
+const WEB_RATE = [1.0, 0.95, 0.88, 0.82, 0.76, 0.7, 0.64, 0.59, 0.54, 0.49, 0.43, 0.3]
+
+/** Orders placed by the end of month `m` — the tooltip's second line. */
+const ordersBy = (rates: number[], m: number) => rates.slice(0, m).reduce((a, b) => a + b, 0).toFixed(1)
+
+const cumulative = (rates: number[], aov: number) => {
+  const out = [0]
+  let orders = 0
+  for (const r of rates) {
+    orders += r
+    out.push(Math.round(orders * aov))
+  }
+  return out
+}
+
+const MONTHS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+const APP = cumulative(APP_RATE, APP_AOV)
+const WEB = cumulative(WEB_RATE, AOV)
+const APP_ORDERS = APP_RATE.reduce((a, b) => a + b, 0)
+const WEB_ORDERS = WEB_RATE.reduce((a, b) => a + b, 0)
+const LTV_RATIO = APP[12] / WEB[12]
+
+const Y_MAX = 800
 const X0 = 64
 const X1 = 786
 const Y0 = 30
@@ -26,7 +59,7 @@ const yAt = (v: number) => scale(v, 0, Y_MAX, Y1, Y0)
 const APP_PTS: Pt[] = APP.map((v, i) => [xAt(i), yAt(v)])
 const WEB_PTS: Pt[] = WEB.map((v, i) => [xAt(i), yAt(v)])
 const APP_SAMPLES = sampleCurve(APP_PTS)
-const TICKS = [0, 500, 1000, 1500]
+const TICKS = [0, 200, 400, 600, 800]
 
 export default function Metrics() {
   return (
@@ -54,9 +87,11 @@ export default function Metrics() {
         </div>
 
         <p className="mt-10 max-w-[74ch] text-[0.8125rem] leading-relaxed text-faint">
-          Figures are an illustrative model built from widely reported app-versus-web engagement
-          benchmarks, not a forecast for your business. Before you commit to anything, we build the same
-          model on your real order data — your customer count, your average order value, your repeat rate.
+          One model, one set of assumptions, stated in full above: a {usd(AOV)} ticket, {WEB_ORDERS.toFixed(1)}{' '}
+          orders a year without an app and {APP_ORDERS.toFixed(1)} with one, at a{' '}
+          {Math.round(BASKET_LIFT * 100)}% larger basket. The order frequencies come from widely reported
+          app-versus-web engagement benchmarks — they are not a forecast for your business. Before you commit
+          to anything we rebuild this on your real order data, with your ticket size and your repeat rate.
         </p>
       </div>
     </Section>
@@ -107,8 +142,10 @@ function GrowthChart() {
       {/* Title + legend */}
       <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
         <figcaption>
-          <h3 className="type-3 text-ink-900">Cumulative revenue per customer</h3>
-          <p className="mt-1.5 text-[0.875rem] text-mute">First 12 months after a customer&apos;s first order</p>
+          <h3 className="type-3 text-ink-900">Revenue per customer, first 12 months</h3>
+          <p className="mt-1.5 text-[0.875rem] text-mute">
+            At a {usd(AOV)} average order value · cumulative, per customer acquired
+          </p>
         </figcaption>
         <ul className="flex shrink-0 flex-wrap items-center gap-x-6 gap-y-2">
           {[
@@ -134,7 +171,7 @@ function GrowthChart() {
         onBlur={() => setHover(null)}
         tabIndex={0}
         role="img"
-        aria-label="Line chart: cumulative revenue per customer over twelve months. With your app, $1,310 by month twelve. Web and email only, $470. Use the arrow keys to read each month."
+        aria-label={`Line chart: cumulative revenue per customer over twelve months at a ${usd(AOV)} average order value. With your app, ${usd(APP[12])} from ${APP_ORDERS.toFixed(1)} orders. Web and email only, ${usd(WEB[12])} from ${WEB_ORDERS.toFixed(1)} orders. Use the arrow keys to read each month.`}
       >
         <svg viewBox={`0 0 ${VB_W} ${VB_H}`} className="w-full overflow-visible" fill="none">
           {/* Gridlines + y ticks */}
@@ -225,18 +262,18 @@ function GrowthChart() {
           {/* Direct end labels — only the two endpoints get numbers */}
           <motion.g style={still ? undefined : { opacity: endOpacity }}>
             <text x={X1 + 18} y={yAt(APP[12]) - 8} className="fill-ink-700 text-[19px] font-semibold [letter-spacing:-0.03em]">
-              $1,310
+              {usd(APP[12])}
             </text>
             <text x={X1 + 18} y={yAt(APP[12]) + 12} className="fill-mute text-[13px]">
-              with your app
+              {APP_ORDERS.toFixed(1)} orders
             </text>
 
             <circle cx={xAt(12)} cy={yAt(WEB[12])} r="4.5" fill="#c7c7cc" stroke="#fff" strokeWidth="2.5" vectorEffect="non-scaling-stroke" />
             <text x={X1 + 18} y={yAt(WEB[12]) - 8} className="fill-mute text-[19px] font-semibold [letter-spacing:-0.03em]">
-              $470
+              {usd(WEB[12])}
             </text>
             <text x={X1 + 18} y={yAt(WEB[12]) + 12} className="fill-faint text-[13px]">
-              without
+              {WEB_ORDERS.toFixed(1)} orders
             </text>
           </motion.g>
 
@@ -273,15 +310,21 @@ function GrowthChart() {
             </p>
             <div className="mt-2 space-y-1.5">
               <div className="flex items-center gap-2.5">
-                <span className="h-[3px] w-4 rounded-full bg-ink-700" />
+                <span className="h-[3px] w-4 shrink-0 rounded-full bg-ink-700" />
                 <span className="num text-[0.9375rem] font-semibold tracking-[-0.02em] text-ink-900">
                   {usd(APP[hover])}
                 </span>
+                <span className="num whitespace-nowrap text-[0.75rem] text-faint">
+                  {ordersBy(APP_RATE, hover)} orders
+                </span>
               </div>
               <div className="flex items-center gap-2.5">
-                <span className="h-[3px] w-4 rounded-full bg-chart-gray" />
+                <span className="h-[3px] w-4 shrink-0 rounded-full bg-chart-gray" />
                 <span className="num text-[0.9375rem] font-medium tracking-[-0.02em] text-mute">
                   {usd(WEB[hover])}
+                </span>
+                <span className="num whitespace-nowrap text-[0.75rem] text-faint">
+                  {ordersBy(WEB_RATE, hover)} orders
                 </span>
               </div>
             </div>
@@ -289,9 +332,39 @@ function GrowthChart() {
         ) : null}
       </div>
 
+      {/* What the curve is built from, said out loud */}
+      <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-5 border-t border-black/[0.07] pt-7 sm:grid-cols-4">
+        {[
+          { k: 'Average order value', v: usd(AOV), n: 'the ticket this model runs on' },
+          { k: 'Orders, web & email', v: WEB_ORDERS.toFixed(1), n: 'in the first 12 months' },
+          { k: 'Orders, with the app', v: APP_ORDERS.toFixed(1), n: `+${(APP_ORDERS - WEB_ORDERS).toFixed(1)} per customer` },
+          {
+            k: 'Basket in the app',
+            v: `+${Math.round(BASKET_LIFT * 100)}%`,
+            n: `${usd(APP_AOV)} against ${usd(AOV)}`,
+          },
+        ].map((a) => (
+          <div key={a.k}>
+            <dt className="text-[0.6875rem] font-semibold uppercase tracking-[0.16em] text-faint">{a.k}</dt>
+            <dd className="num mt-1.5 font-display text-[1.375rem] font-semibold tracking-[-0.035em] text-ink-900">
+              {a.v}
+            </dd>
+            <dd className="mt-0.5 text-[0.75rem] text-mute">{a.n}</dd>
+          </div>
+        ))}
+      </dl>
+      <p className="mt-6 text-[0.8125rem] leading-relaxed text-faint">
+        Change the ticket size and every number here moves with it — {usd(AOV)} is a placeholder for yours.
+        The gap comes from two things only: app customers order {(APP_ORDERS - WEB_ORDERS).toFixed(1)} more
+        times a year, and spend {Math.round(BASKET_LIFT * 100)}% more when they do. That is{' '}
+        {LTV_RATIO.toFixed(2)}× the revenue per customer, not a rounding of anything larger.
+      </p>
+
       {/* The same values, reachable without the chart */}
       <table className="sr-only">
-        <caption>Cumulative revenue per customer, first 12 months</caption>
+        <caption>
+          Cumulative revenue per customer over the first 12 months, at a {usd(AOV)} average order value
+        </caption>
         <thead>
           <tr>
             <th scope="col">Month</th>
@@ -339,25 +412,26 @@ const TILES: Tile[] = [
   },
   {
     label: 'Lifetime value',
-    to: 2.8,
-    decimals: 1,
+    to: Number(LTV_RATIO.toFixed(2)),
+    decimals: 2,
     suffix: '×',
-    note: 'Revenue per customer over 12 months',
+    note: `${usd(APP[12])} against ${usd(WEB[12])} over 12 months`,
     bars: [34, 41, 47, 52, 61, 68, 74, 83, 100],
   },
   {
     label: 'Orders per year',
-    to: 3.1,
+    to: Number((APP_ORDERS - WEB_ORDERS).toFixed(1)),
     decimals: 1,
     prefix: '+',
-    note: 'From 7.4 to 10.5 per active customer',
+    note: `From ${WEB_ORDERS.toFixed(1)} to ${APP_ORDERS.toFixed(1)} per customer`,
     spark: [30, 33, 32, 38, 41, 45, 44, 52, 57, 61, 68, 72],
   },
   {
-    label: 'App opens per month',
-    to: 11.2,
-    decimals: 1,
-    note: 'Every open is a chance to sell nothing at all',
+    label: 'Average basket',
+    to: APP_AOV,
+    decimals: 2,
+    prefix: '$',
+    note: `${Math.round(BASKET_LIFT * 100)}% above the ${usd(AOV)} web ticket`,
     bars: [28, 35, 33, 44, 52, 58, 66, 79, 100],
   },
 ]

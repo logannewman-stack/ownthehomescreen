@@ -135,45 +135,110 @@ export default function Showcase() {
         </div>
       </div>
 
-      {/* ---------- Mobile: one device per beat ---------- */}
-      <div className="shell mt-14 space-y-24 lg:hidden">
-        {ITEMS.map((it) => (
-          <div key={it.title}>
-            <Reveal>
-              <div className="relative mx-auto w-[min(268px,72vw)]">
-                <Phone>{it.screen}</Phone>
-                <div className="pointer-events-none absolute -bottom-6 left-1/2 h-10 w-[120%] -translate-x-1/2 rounded-[50%] bg-ink-900/15 blur-2xl" />
-              </div>
-            </Reveal>
-            <Reveal delay={0.06} className="mt-14">
-              <Copy item={it} />
-            </Reveal>
-          </div>
-        ))}
-      </div>
+      {/* ---------- Mobile: the same pinned sequence, stacked ---------- */}
+      <MobileStage />
 
       <div className="h-[clamp(72px,8.6vw,136px)]" />
     </Section>
   )
 }
 
-function Copy({ item }: { item: Item }) {
+/**
+ * Small screens get the same pinned device and the same crossfade — the screens
+ * changing inside the phone is the whole point of the section, so it can't be a
+ * desktop-only flourish. Here the copy crossfades in place beneath the device
+ * rather than scrolling past it, which is the only way both fit in one viewport.
+ */
+function MobileStage() {
+  const ref = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end end'] })
+  const [active, setActive] = useState(0)
+
+  useMotionValueEvent(scrollYProgress, 'change', (v) => {
+    const i = Math.min(ITEMS.length - 1, Math.max(0, Math.floor(v * ITEMS.length + 0.0001)))
+    setActive((prev) => (prev === i ? prev : i))
+  })
+
   return (
-    <div className="max-w-[34rem]">
+    <div ref={ref} className="relative mt-10 lg:hidden" style={{ height: `${ITEMS.length * 100}svh` }}>
+      <div className="sticky top-0 flex h-[100svh] flex-col items-center justify-start overflow-hidden pt-[68px]">
+        <div className="relative w-[min(206px,52vw)] shrink-0">
+          <Phone>
+            {ITEMS.map((it, i) => (
+              <Layer key={it.title} p={scrollYProgress} i={i} n={ITEMS.length}>
+                {it.screen}
+              </Layer>
+            ))}
+          </Phone>
+          <div className="pointer-events-none absolute -bottom-5 left-1/2 h-8 w-[120%] -translate-x-1/2 rounded-[50%] bg-ink-900/15 blur-2xl" />
+        </div>
+
+        {/* Beat counter + segmented rail, laid out horizontally down here */}
+        <div className="mt-7 flex items-center gap-3">
+          <span className="num text-[0.625rem] font-semibold tracking-[0.14em] text-faint">
+            {String(active + 1).padStart(2, '0')}
+            <span className="text-black/15"> / {String(ITEMS.length).padStart(2, '0')}</span>
+          </span>
+          <span className="flex items-center gap-1.5">
+            {ITEMS.map((it, i) => (
+              <span key={it.title} className="relative h-[2px] w-6 overflow-hidden rounded-full bg-black/[0.09]">
+                <motion.span
+                  className="absolute inset-y-0 left-0 bg-ink-900"
+                  initial={false}
+                  animate={{ width: i <= active ? '100%' : '0%' }}
+                  transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                />
+              </span>
+            ))}
+          </span>
+        </div>
+
+        {/* Copy crossfading in the space below. The padding lives on the copy
+            itself: an absolutely positioned layer resolves inset-0 against the
+            padding box, so padding here would do nothing. */}
+        <div className="relative mt-6 w-full grow">
+          {ITEMS.map((it, i) => (
+            <Layer key={it.title} p={scrollYProgress} i={i} n={ITEMS.length} soft>
+              <Copy item={it} compact />
+            </Layer>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function Copy({ item, compact = false }: { item: Item; compact?: boolean }) {
+  return (
+    <div className={compact ? 'mx-auto max-w-[34rem] px-6' : 'max-w-[34rem]'}>
       <Eyebrow>{item.kicker}</Eyebrow>
-      <h3 className="type-2 mt-5 text-balance text-ink-900">{item.title}</h3>
-      <p className="lede mt-5">{item.body}</p>
-      <ul className="mt-8 space-y-3.5">
-        {item.points.map((pt) => (
-          <li key={pt} className="flex items-start gap-3 text-[0.9375rem] text-ink-700">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="mt-[3px] shrink-0" aria-hidden="true">
-              <path d="M3 8.5l3.2 3.2L13 5" stroke="#1d1d1f" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-            {pt}
-          </li>
-        ))}
-      </ul>
-      <p className="mt-8 inline-flex items-center gap-2.5 rounded-full border border-black/[0.09] px-4 py-2 text-[0.8125rem] font-medium text-ink-700">
+      <h3
+        className={
+          compact
+            ? 'mt-3 font-display text-[1.625rem] font-semibold leading-[1.08] tracking-[-0.035em] text-balance text-ink-900'
+            : 'type-2 mt-5 text-balance text-ink-900'
+        }
+      >
+        {item.title}
+      </h3>
+      <p className={compact ? 'mt-3.5 text-[0.9375rem] leading-relaxed text-mute' : 'lede mt-5'}>{item.body}</p>
+      {compact ? null : (
+        <ul className="mt-8 space-y-3.5">
+          {item.points.map((pt) => (
+            <li key={pt} className="flex items-start gap-3 text-[0.9375rem] text-ink-700">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="mt-[3px] shrink-0" aria-hidden="true">
+                <path d="M3 8.5l3.2 3.2L13 5" stroke="#1d1d1f" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              {pt}
+            </li>
+          ))}
+        </ul>
+      )}
+      <p
+        className={`inline-flex items-center gap-2.5 rounded-full border border-black/[0.09] px-4 py-2 text-[0.8125rem] font-medium text-ink-700 ${
+          compact ? 'mt-5' : 'mt-8'
+        }`}
+      >
         <span className="h-1.5 w-1.5 rounded-full bg-ink-900" />
         {item.outcome}
       </p>
@@ -185,7 +250,20 @@ function Copy({ item }: { item: Item }) {
  * One app screen inside the pinned device. Crossfades with a slight push so
  * the transition reads as the phone changing screens, not a slideshow.
  */
-function Layer({ children, p, i, n }: { children: ReactNode; p: MotionValue<number>; i: number; n: number }) {
+function Layer({
+  children,
+  p,
+  i,
+  n,
+  soft = false,
+}: {
+  children: ReactNode
+  p: MotionValue<number>
+  i: number
+  n: number
+  /** Text needs a gentler push than a device screen, or it reads as a slideshow. */
+  soft?: boolean
+}) {
   const step = 1 / n
   const s = i * step
   const first = i === 0
@@ -195,12 +273,44 @@ function Layer({ children, p, i, n }: { children: ReactNode; p: MotionValue<numb
   // when it releases. Everything else crossfades through its own window.
   const inA = first ? 0 : s - step * 0.34
   const inB = first ? 0 : s + step * 0.14
+  const mid = s + step * 0.5
   const outA = last ? 1 : s + step * 0.86
   const outB = last ? 1 : s + step * 1.34
+  const shift = soft ? 14 : 26
+  const zoom = soft ? 0.02 : 0.05
 
-  const opacity = useTransform(p, stops(inA, inB, outA, outB), [first ? 1 : 0, 1, 1, last ? 1 : 0])
-  const scale = useTransform(p, stops(inA, s + step * 0.5, outB), [first ? 1 : 1.05, 1, last ? 1 : 0.96])
-  const y = useTransform(p, stops(inA, s + step * 0.5, outB), [first ? 0 : 26, 0, last ? 0 : -26])
+  /**
+   * The window is pinned to 0 and 1 at both ends with held values. Framer
+   * extrapolates linearly beyond the outermost stop rather than clamping, so a
+   * range that stops early makes a faded-out layer climb back into view as the
+   * section finishes — which is exactly what it did before these two guards.
+   */
+  const win = stops(0, inA, inB, mid, outA, outB, 1)
+  const held = (edge: number, peak: number) => [edge, edge, peak, peak, peak, edge, edge]
+
+  const opacity = useTransform(p, win, held(0, 1).map((v, k) => {
+    if (first && k < 2) return 1
+    if (last && k > 4) return 1
+    return v
+  }))
+  const scale = useTransform(p, win, [
+    first ? 1 : 1 + zoom,
+    first ? 1 : 1 + zoom,
+    1,
+    1,
+    1,
+    last ? 1 : 1 - zoom,
+    last ? 1 : 1 - zoom,
+  ])
+  const y = useTransform(p, win, [
+    first ? 0 : shift,
+    first ? 0 : shift,
+    0,
+    0,
+    0,
+    last ? 0 : -shift,
+    last ? 0 : -shift,
+  ])
   return (
     <motion.div style={{ opacity, scale, y }} className="absolute inset-0 will-change-transform">
       {children}
