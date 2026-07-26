@@ -50,7 +50,7 @@ const TIERS = [
 
 export default function Engagements() {
   return (
-    <Section id="engagements" tone="mist" className="py-[clamp(72px,8.6vw,136px)]">
+    <Section id="engagements" tone="mist" className="py-[clamp(84px,10vw,156px)]">
       <div className="shell">
         <Reveal className="max-w-[46rem]">
           <Eyebrow>Engagements</Eyebrow>

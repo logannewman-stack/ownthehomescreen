@@ -77,7 +77,7 @@ export default function Showcase() {
 
   return (
     <Section id="product" tone="white">
-      <div className="shell pt-[clamp(72px,8.6vw,136px)]">
+      <div className="shell pt-[clamp(84px,10vw,156px)]">
         <Reveal className="max-w-[54rem]">
           <Eyebrow>The app</Eyebrow>
           <h2 className="type-1 mt-6 text-balance text-ink-900">Six screens that bring them back.</h2>
@@ -138,7 +138,7 @@ export default function Showcase() {
       {/* ---------- Mobile: the same pinned sequence, stacked ---------- */}
       <MobileStage />
 
-      <div className="h-[clamp(72px,8.6vw,136px)]" />
+      <div className="h-[clamp(84px,10vw,156px)]" />
     </Section>
   )
 }
@@ -160,21 +160,31 @@ function MobileStage() {
   })
 
   return (
-    <div ref={ref} className="relative mt-10 lg:hidden" style={{ height: `${ITEMS.length * 100}svh` }}>
-      <div className="sticky top-0 flex h-[100svh] flex-col items-center justify-start overflow-hidden pt-[68px]">
-        <div className="relative w-[min(206px,52vw)] shrink-0">
-          <Phone>
-            {ITEMS.map((it, i) => (
-              <Layer key={it.title} p={scrollYProgress} i={i} n={ITEMS.length}>
-                {it.screen}
-              </Layer>
-            ))}
-          </Phone>
-          <div className="pointer-events-none absolute -bottom-5 left-1/2 h-8 w-[120%] -translate-x-1/2 rounded-[50%] bg-ink-900/15 blur-2xl" />
+    <div ref={ref} className="relative mt-8 lg:hidden" style={{ height: `${ITEMS.length * 100}svh` }}>
+      {/*
+       * The height budget runs bottom-up: the copy gets a fixed, reserved
+       * block, the rail a fixed row, and the device flexes into whatever is
+       * left. Sizing the phone first was what pushed the description below
+       * the fold on real phones — the browser chrome ate the leftover space.
+       */}
+      <div className="sticky top-0 flex h-[100svh] flex-col overflow-hidden pb-[max(3svh,16px)] pt-[64px]">
+        <div className="flex min-h-0 w-full flex-1 items-center justify-center">
+          {/* Height-driven: the aspect ratio derives the width, so the device
+              is exactly as large as the leftover space allows. */}
+          <div className="relative aspect-[393/852] h-full max-h-full">
+            <Phone>
+              {ITEMS.map((it, i) => (
+                <Layer key={it.title} p={scrollYProgress} i={i} n={ITEMS.length}>
+                  {it.screen}
+                </Layer>
+              ))}
+            </Phone>
+            <div className="pointer-events-none absolute -bottom-4 left-1/2 h-7 w-[120%] -translate-x-1/2 rounded-[50%] bg-ink-900/15 blur-2xl" />
+          </div>
         </div>
 
-        {/* Beat counter + segmented rail, laid out horizontally down here */}
-        <div className="mt-7 flex items-center gap-3">
+        {/* Beat counter + segmented rail */}
+        <div className="mt-4 flex shrink-0 items-center justify-center gap-3">
           <span className="num text-[0.625rem] font-semibold tracking-[0.14em] text-faint">
             {String(active + 1).padStart(2, '0')}
             <span className="text-black/15"> / {String(ITEMS.length).padStart(2, '0')}</span>
@@ -193,10 +203,9 @@ function MobileStage() {
           </span>
         </div>
 
-        {/* Copy crossfading in the space below. The padding lives on the copy
-            itself: an absolutely positioned layer resolves inset-0 against the
-            padding box, so padding here would do nothing. */}
-        <div className="relative mt-6 w-full grow">
+        {/* Copy crossfading inside its reserved block — sized for the longest
+            beat, so no description can ever be cut off by the viewport. */}
+        <div className="relative mx-auto mt-4 h-[236px] w-full max-w-[32rem] shrink-0">
           {ITEMS.map((it, i) => (
             <Layer key={it.title} p={scrollYProgress} i={i} n={ITEMS.length} soft>
               <Copy item={it} compact />
@@ -215,13 +224,13 @@ function Copy({ item, compact = false }: { item: Item; compact?: boolean }) {
       <h3
         className={
           compact
-            ? 'mt-3 font-display text-[1.625rem] font-semibold leading-[1.08] tracking-[-0.035em] text-balance text-ink-900'
+            ? 'mt-2.5 font-display text-[1.375rem] font-semibold leading-[1.12] tracking-[-0.03em] text-balance text-ink-900'
             : 'type-2 mt-5 text-balance text-ink-900'
         }
       >
         {item.title}
       </h3>
-      <p className={compact ? 'mt-3.5 text-[0.9375rem] leading-relaxed text-mute' : 'lede mt-5'}>{item.body}</p>
+      <p className={compact ? 'mt-2.5 text-[0.875rem] leading-[1.55] text-mute' : 'lede mt-5'}>{item.body}</p>
       {compact ? null : (
         <ul className="mt-8 space-y-3.5">
           {item.points.map((pt) => (
@@ -235,8 +244,8 @@ function Copy({ item, compact = false }: { item: Item; compact?: boolean }) {
         </ul>
       )}
       <p
-        className={`inline-flex items-center gap-2.5 rounded-full border border-black/[0.09] px-4 py-2 text-[0.8125rem] font-medium text-ink-700 ${
-          compact ? 'mt-5' : 'mt-8'
+        className={`inline-flex items-center gap-2.5 rounded-full border border-black/[0.09] font-medium text-ink-700 ${
+          compact ? 'mt-4 px-3.5 py-1.5 text-[0.75rem]' : 'mt-8 px-4 py-2 text-[0.8125rem]'
         }`}
       >
         <span className="h-1.5 w-1.5 rounded-full bg-ink-900" />

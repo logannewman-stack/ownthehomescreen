@@ -21,7 +21,7 @@ const REPORTED = [
 
 export default function Proof() {
   return (
-    <Section tone="white" className="py-[clamp(72px,8.6vw,136px)]">
+    <Section tone="white" className="py-[clamp(84px,10vw,156px)]">
       <div className="shell">
         {/* A statement of intent — replace with a client quote once one is signed off */}
         <Reveal>

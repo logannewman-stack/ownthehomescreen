@@ -51,7 +51,7 @@ const CAPABILITIES = [
 
 export default function Build() {
   return (
-    <Section id="build" tone="white" className="py-[clamp(72px,8.6vw,136px)]">
+    <Section id="build" tone="white" className="py-[clamp(84px,10vw,156px)]">
       <div className="shell">
         <Reveal className="max-w-[46rem]">
           <Eyebrow>What we build</Eyebrow>

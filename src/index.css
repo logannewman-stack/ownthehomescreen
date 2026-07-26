@@ -30,6 +30,23 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  /* No grey flash on taps — buttons carry their own pressed states */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Anchor targets land clear of the fixed navigation bar */
+[id] {
+  scroll-margin-top: 72px;
+}
+
+/* Keyboard focus is always visible, in the current text colour so it reads
+   on the white sections and the black ones alike */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+.slider:focus-visible {
+  outline: none; /* the thumb draws its own ring */
 }
 
 #root {

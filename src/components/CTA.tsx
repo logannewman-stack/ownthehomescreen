@@ -18,7 +18,7 @@ export default function CTA() {
       ref={ref}
       id="contact-cta"
       data-nav="dark"
-      className="relative overflow-hidden bg-ink-800 pt-[clamp(88px,10.4vw,164px)] text-white"
+      className="relative overflow-hidden bg-ink-800 pt-[clamp(96px,11vw,176px)] text-white"
     >
       <div
         className="pointer-events-none absolute inset-0"

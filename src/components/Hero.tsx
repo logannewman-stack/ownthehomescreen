@@ -31,8 +31,11 @@ export default function Hero() {
   const phoneRotateX = useTransform(p, [0, 0.34], [12, 0])
   const floorOpacity = useTransform(p, [0, 0.32, 0.7], [0.35, 0.8, 0.4])
 
-  // Beat 3: proof.
+  // Beat 3: proof. Floating chips beside the device on desktop; a stat strip
+  // in the space beneath it on phones, where there is no room at the sides.
   const proofOpacity = useTransform(p, [0.6, 0.76], [0, 1])
+  const stripOpacity = useTransform(p, [0.58, 0.74], [0, 1])
+  const stripY = useTransform(p, [0.58, 1], [18, 0])
   const cueOpacity = useTransform(p, [0, 0.06], [1, 0])
 
   return (
@@ -61,8 +64,10 @@ export default function Hero() {
           </div>
         </motion.div>
 
-        {/* Device — centred in the frame, then moved by scroll alone */}
-        <div className="absolute left-1/2 top-1/2 z-10 w-[clamp(252px,26vw,320px)] -translate-x-1/2 -translate-y-1/2">
+        {/* Device — centred in the frame, then moved by scroll alone. On
+            phones it sits lower so its top edge never crowds the CTA row,
+            and the freed space at the bottom takes the stat strip. */}
+        <div className="absolute left-1/2 top-[58%] z-10 w-[min(clamp(252px,26vw,320px),28svh)] -translate-x-1/2 -translate-y-1/2 lg:top-1/2 lg:w-[clamp(252px,26vw,320px)]">
           <motion.div
             style={{ y: phoneY, scale: phoneScale, rotateX: phoneRotateX, transformPerspective: 1500 }}
             className="relative will-change-transform"
@@ -85,6 +90,31 @@ export default function Hero() {
             </motion.div>
           </motion.div>
         </div>
+
+        {/* On phones the proof lands as a strip in the space under the device */}
+        <motion.div
+          style={{ opacity: stripOpacity, y: stripY }}
+          className="absolute inset-x-0 bottom-[max(4.5svh,24px)] z-20 lg:hidden"
+        >
+          <div className="shell">
+            <div className="grid grid-cols-3 divide-x divide-black/[0.07] rounded-2xl border border-black/[0.06] bg-white/85 py-4 shadow-lift backdrop-blur-xl">
+              {[
+                { v: '+38%', l: 'Repeat rate' },
+                { v: '1.55×', l: 'Lifetime value' },
+                { v: '+3.1', l: 'Orders a year' },
+              ].map((s) => (
+                <div key={s.l} className="px-1 text-center">
+                  <p className="font-display text-[1.375rem] font-semibold leading-none tracking-[-0.035em] text-ink-900">
+                    {s.v}
+                  </p>
+                  <p className="mt-1.5 whitespace-nowrap text-[0.5625rem] font-semibold uppercase tracking-[0.11em] text-faint">
+                    {s.l}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </motion.div>
 
         {/* Scroll cue — kept out of the device's way */}
         <motion.div

@@ -46,7 +46,7 @@ export default function Process() {
   const p = useSmoothProgress(ref, ['start 0.7', 'end 0.85'])
 
   return (
-    <Section id="process" tone="mist" className="py-[clamp(72px,8.6vw,136px)]">
+    <Section id="process" tone="mist" className="py-[clamp(84px,10vw,156px)]">
       <div className="shell lg:grid lg:grid-cols-[minmax(0,400px)_minmax(0,1fr)] lg:gap-20 xl:gap-24">
         {/* Sticky header */}
         <div>

@@ -39,7 +39,7 @@ export default function Model() {
   const barNow = (baseline / projected) * 100
 
   return (
-    <Section id="model" tone="white" className="py-[clamp(72px,8.6vw,136px)]">
+    <Section id="model" tone="white" className="py-[clamp(84px,10vw,156px)]">
       <div className="shell">
         <Reveal className="max-w-[48rem]">
           <Eyebrow>The maths</Eyebrow>

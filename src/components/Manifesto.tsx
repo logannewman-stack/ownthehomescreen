@@ -14,7 +14,7 @@ export default function Manifesto() {
   return (
     <section
       data-nav="dark"
-      className="relative overflow-hidden bg-ink-800 py-[clamp(88px,10.4vw,164px)] text-white"
+      className="relative overflow-hidden bg-ink-800 py-[clamp(96px,11vw,176px)] text-white"
     >
       {/* One soft spotlight, top centre */}
       <div

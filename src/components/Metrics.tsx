@@ -63,7 +63,7 @@ const TICKS = [0, 200, 400, 600, 800]
 
 export default function Metrics() {
   return (
-    <Section id="results" tone="mist" className="py-[clamp(72px,8.6vw,136px)]">
+    <Section id="results" tone="mist" className="py-[clamp(84px,10vw,156px)]">
       <div className="shell">
         <Reveal className="max-w-[52rem]">
           <Eyebrow>The results</Eyebrow>
