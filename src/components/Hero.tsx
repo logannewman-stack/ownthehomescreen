@@ -55,8 +55,8 @@ export default function Hero() {
             stagger={0.09}
           />
           <p className="lede mx-auto mt-6 max-w-[46ch] text-balance">
-            We design and build the app your customers keep — so reordering, booking and coming back is one
-            tap, not a search, a login and a hope.
+            We design and build the app that puts your brand on your customers&apos; home screens — so
+            reordering, booking and coming back is one tap, not a search, a login and a hope.
           </p>
           <div className="mt-9 flex flex-wrap items-center justify-center gap-x-7 gap-y-4">
             <Button size="lg">Book a strategy call</Button>

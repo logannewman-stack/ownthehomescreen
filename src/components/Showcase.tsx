@@ -16,7 +16,7 @@ type Item = {
 
 const ITEMS: Item[] = [
   {
-    kicker: 'The icon',
+    kicker: 'Their home screen',
     title: 'Prime real estate, permanently.',
     body: 'Your brand sits between their bank and their messages — the six inches of glass they check 96 times a day. No algorithm decides who sees you. No bid. No feed.',
     points: ['Your name, your mark', 'Zero acquisition cost per open', 'Nobody can outbid you'],

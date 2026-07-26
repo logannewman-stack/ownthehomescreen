@@ -28,7 +28,7 @@ export default function Proof() {
           <Eyebrow>Why we do it this way</Eyebrow>
         </Reveal>
         <ScrollLit
-          text="An app is not a marketing campaign. It is the only piece of software your customer chooses to keep, and the only channel you will never have to buy back. We build it like it matters, and we report on the three numbers that prove it."
+          text="An app is not a marketing campaign. It is your place on your customer's home screen — the only software they choose to keep, and the only channel you never have to buy back. We build it like it matters, and we report on the three numbers that prove it."
           className="mt-8 max-w-[40ch] font-display text-[clamp(1.625rem,3.6vw,3rem)] font-semibold leading-[1.08] tracking-[-0.04em] text-ink-900"
         />
 

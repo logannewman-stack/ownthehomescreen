@@ -30,8 +30,8 @@ export default function Footer() {
           <div>
             <Wordmark tone="dark" />
             <p className="mt-5 max-w-[30ch] text-[0.875rem] leading-relaxed text-white/45">
-              We build the mobile app your customers keep — and the retention, frequency and lifetime value
-              that follows it.
+              We put your brand on your customers&apos; home screens — and build the retention, frequency
+              and lifetime value that follows.
             </p>
           </div>
 

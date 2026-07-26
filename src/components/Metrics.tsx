@@ -69,8 +69,8 @@ export default function Metrics() {
           <Eyebrow>The results</Eyebrow>
           <h2 className="type-1 mt-6 text-balance text-ink-900">Everything moves in the same direction.</h2>
           <p className="lede mt-6 max-w-[46ch]">
-            An app doesn&apos;t just add another way to buy. It removes every reason not to — and that
-            compounds in the four numbers you already watch.
+            Owning your customers&apos; home screens doesn&apos;t just add another way to buy. It removes
+            every reason not to — and that compounds in the four numbers you already watch.
           </p>
         </Reveal>
 

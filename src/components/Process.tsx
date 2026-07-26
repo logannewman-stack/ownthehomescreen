@@ -29,7 +29,7 @@ const STEPS = [
     n: '04',
     when: 'Launch week',
     title: 'Launch',
-    body: 'Store submission, review, listing and screenshots handled. Then the install campaign: in-store, email, SMS and social, engineered to get your existing customers onto the app in the first thirty days.',
+    body: 'Store submission, review, listing and screenshots handled. Then the install campaign: in-store, email, SMS and social, engineered to put your icon on your customers’ home screens inside the first thirty days.',
     deliver: ['App Store and Play submission', 'Install campaign kit', 'Staff training'],
   },
   {

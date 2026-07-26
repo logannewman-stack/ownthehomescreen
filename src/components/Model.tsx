@@ -45,8 +45,8 @@ export default function Model() {
           <Eyebrow>The maths</Eyebrow>
           <h2 className="type-1 mt-6 text-balance text-ink-900">Run it on your own numbers.</h2>
           <p className="lede mt-6 max-w-[46ch]">
-            Three inputs you already know. Move them and watch what a third of your customers going
-            one-tap does to a year.
+            Three inputs you already know. Move them and watch what owning a third of your
+            customers&apos; home screens does to a year.
           </p>
         </Reveal>
 
