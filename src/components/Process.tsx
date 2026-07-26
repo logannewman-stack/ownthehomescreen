@@ -36,14 +36,6 @@ const STEPS = [
     body: 'Store submission, review, listing and screenshots handled. Then the install campaign — in-store, email, SMS and social — engineered to put your icon on your customers’ home screens inside the first thirty days.',
     deliver: ['App Store and Play submission', 'Install campaign kit', 'Staff training'],
   },
-  {
-    n: '05',
-    when: 'Ongoing',
-    short: 'Ongoing',
-    title: 'Grow',
-    body: 'One page a month: who came back, how often they bought, what each customer is now worth. Plus the roadmap — new features, OS updates, seasonal campaigns — shipped without you chasing anyone.',
-    deliver: ['Monthly retention report', 'Roadmap and releases', 'OS and store maintenance'],
-  },
 ]
 
 const N = STEPS.length

@@ -28,9 +28,9 @@ export default function App() {
         <Metrics />
         <Showcase />
         <Manifesto />
-        <Build />
         <Process />
         <FirstYear />
+        <Build />
         <Model />
         <Proof />
         <Engagements />
