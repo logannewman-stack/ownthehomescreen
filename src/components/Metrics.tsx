@@ -5,45 +5,27 @@ import { useSmoothProgress } from '../lib/motion'
 import { Counter, Eyebrow, Reveal, Section, Sparkline } from './ui'
 
 /* ------------------------------------------------------------------ *
- * The model. One illustrative cohort, two paths.
- *
- * Every number in this section is derived from the four constants below rather
- * than typed in, so the curve, the endpoint labels and the stat tiles can never
- * drift apart — and the assumptions can be stated on the chart itself.
+ * The model lives in lib/model.ts — one set of constants shared with the
+ * after-launch story and the calculator, so the curve, the endpoint labels
+ * and the stat tiles can never drift apart.
  * ------------------------------------------------------------------ */
-
-/** Average order value, and the larger basket an app customer tends to build. */
-const AOV = 58
-const BASKET_LIFT = 0.12
-const APP_AOV = AOV * (1 + BASKET_LIFT)
-
-/**
- * Orders per month per acquired customer. The app cohort holds its rate; the
- * web-and-email cohort decays as the cohort lapses, which is what flattens its
- * curve. Totals: 11.2 orders against 8.1 — the +3.1 in the tiles below.
- */
-const APP_RATE = [0.95, 0.95, 0.95, 0.94, 0.94, 0.93, 0.93, 0.93, 0.92, 0.92, 0.92, 0.92]
-const WEB_RATE = [1.0, 0.95, 0.88, 0.82, 0.76, 0.7, 0.64, 0.59, 0.54, 0.49, 0.43, 0.3]
+import {
+  AOV,
+  APP,
+  APP_AOV,
+  APP_ORDERS,
+  APP_RATE,
+  BASKET_LIFT,
+  LTV_RATIO,
+  WEB,
+  WEB_ORDERS,
+  WEB_RATE,
+} from '../lib/model'
 
 /** Orders placed by the end of month `m` — the tooltip's second line. */
 const ordersBy = (rates: number[], m: number) => rates.slice(0, m).reduce((a, b) => a + b, 0).toFixed(1)
 
-const cumulative = (rates: number[], aov: number) => {
-  const out = [0]
-  let orders = 0
-  for (const r of rates) {
-    orders += r
-    out.push(Math.round(orders * aov))
-  }
-  return out
-}
-
 const MONTHS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-const APP = cumulative(APP_RATE, APP_AOV)
-const WEB = cumulative(WEB_RATE, AOV)
-const APP_ORDERS = APP_RATE.reduce((a, b) => a + b, 0)
-const WEB_ORDERS = WEB_RATE.reduce((a, b) => a + b, 0)
-const LTV_RATIO = APP[12] / WEB[12]
 
 const Y_MAX = 800
 const X0 = 64
@@ -360,28 +342,32 @@ function GrowthChart() {
         {LTV_RATIO.toFixed(2)}× the revenue per customer, not a rounding of anything larger.
       </p>
 
-      {/* The same values, reachable without the chart */}
-      <table className="sr-only">
-        <caption>
-          Cumulative revenue per customer over the first 12 months, at a {usd(AOV)} average order value
-        </caption>
-        <thead>
-          <tr>
-            <th scope="col">Month</th>
-            <th scope="col">With your app</th>
-            <th scope="col">Web and email only</th>
-          </tr>
-        </thead>
-        <tbody>
-          {MONTHS.map((m) => (
-            <tr key={m}>
-              <th scope="row">{m}</th>
-              <td>{usd(APP[m])}</td>
-              <td>{usd(WEB[m])}</td>
+      {/* The same values, reachable without the chart. The sr-only wrapper
+          does the clipping — a table ignores sr-only's 1px width and would
+          otherwise widen the page on small screens. */}
+      <div className="sr-only">
+        <table>
+          <caption>
+            Cumulative revenue per customer over the first 12 months, at a {usd(AOV)} average order value
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Month</th>
+              <th scope="col">With your app</th>
+              <th scope="col">Web and email only</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {MONTHS.map((m) => (
+              <tr key={m}>
+                <th scope="row">{m}</th>
+                <td>{usd(APP[m])}</td>
+                <td>{usd(WEB[m])}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </figure>
   )
 }

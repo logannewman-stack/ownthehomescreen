@@ -118,17 +118,21 @@ function ChannelChart() {
         yours so the channel stays welcome.
       </p>
 
-      <table className="sr-only">
-        <caption>Average open rate by channel</caption>
-        <tbody>
-          {CHANNELS.map((c) => (
-            <tr key={c.name}>
-              <th scope="row">{c.name}</th>
-              <td>{c.value}%</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {/* The sr-only wrapper does the clipping — a table ignores sr-only's
+          1px width and would otherwise widen the page on small screens. */}
+      <div className="sr-only">
+        <table>
+          <caption>Average open rate by channel</caption>
+          <tbody>
+            {CHANNELS.map((c) => (
+              <tr key={c.name}>
+                <th scope="row">{c.name}</th>
+                <td>{c.value}%</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </figure>
   )
 }

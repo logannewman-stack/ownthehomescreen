@@ -4,6 +4,7 @@ import CTA from './components/CTA'
 import { ScrollProgress } from './components/Effects'
 import Engagements from './components/Engagements'
 import { ErrorBoundary } from './components/ErrorBoundary'
+import FirstYear from './components/FirstYear'
 import Footer from './components/Footer'
 import Hero from './components/Hero'
 import Industries from './components/Industries'
@@ -29,6 +30,7 @@ export default function App() {
         <Manifesto />
         <Build />
         <Process />
+        <FirstYear />
         <Model />
         <Proof />
         <Engagements />

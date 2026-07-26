@@ -30,7 +30,16 @@ stays razor-sharp on a 5K display and adds no image weight.
   to white as you read it, beside an open-rate comparison chart.
 - **The maths** — an interactive year-one revenue model: three sliders, spring-settled
   outputs, and a stacked bar whose ink segment *is* the uplift.
-- **Process** — five steps with a rule that fills as you scroll past them.
+- **The journey (Process)** — the page pins and vertical scroll drives the timeline
+  *sideways*: five stations travel right-to-left past a fixed route line whose ink
+  fill always reaches the centre of the screen. Ghost week numbers drift at a
+  slower rate for depth. Geometry is pure vw math (no measurement), and reduced
+  motion gets a stacked static variant.
+- **The first year (FirstYear)** — a dark, pinned five-beat film of what happens
+  after launch: the launch email and install counter, order frequency climbing, the
+  ad budget breathing ($0 per push), the retention decay curves, and the closing
+  realization with the section's own CTA. A year-clock rail tracks the beats; every
+  number derives from `lib/model.ts`.
 - **Close** — three devices rising out of the floor and dissolving into it.
 
 Plus: a nav that flips to its dark livery over the black sections, a scroll-progress
@@ -55,6 +64,7 @@ src/
   index.css                # Tailwind layers, type presets, slider + mask utilities
   lib/
     chart.ts               # Catmull-Rom → Bézier paths, arc-length sampling
+    model.ts               # the one revenue model every section derives from
     motion.ts              # useSmoothProgress + [0,1] progress-stop guard
   components/
     Phone.tsx              # the device: titanium rail, island, status bar
