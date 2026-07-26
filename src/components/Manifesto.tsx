@@ -27,12 +27,12 @@ export default function Manifesto() {
 
       <div className="shell relative">
         <Reveal>
-          <Eyebrow tone="dark">The thesis</Eyebrow>
+          <Eyebrow tone="dark">Why an app</Eyebrow>
         </Reveal>
 
         <ScrollLit
           tone="dark"
-          text="You don't own your place in a feed. You don't own your spot in an inbox. You rent both, at auction, forever. The home screen is the one place a customer puts you on purpose — and never takes you off."
+          text="Ads stop the moment you stop paying. Social media decides who sees your posts. Email gets buried. An app is the one channel you own — it lives on your customer's phone, one tap from the next order, and reaching them is free, every time."
           className="mt-8 max-w-[42ch] font-display text-[clamp(1.75rem,4.1vw,3.5rem)] font-semibold leading-[1.06] tracking-[-0.04em] text-white"
         />
 
