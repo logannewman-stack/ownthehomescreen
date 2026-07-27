@@ -71,7 +71,9 @@ export default function Showcase() {
   const [active, setActive] = useState(0)
 
   useMotionValueEvent(scrollYProgress, 'change', (v) => {
-    const i = Math.min(ITEMS.length - 1, Math.max(0, Math.floor(v * ITEMS.length + 0.0001)))
+    // The copy blocks hand off at (n-1) gaps, so the rail follows the same
+    // spread grid as the device screens.
+    const i = Math.min(ITEMS.length - 1, Math.max(0, Math.round(v * (ITEMS.length - 1))))
     setActive((prev) => (prev === i ? prev : i))
   })
 
@@ -115,7 +117,7 @@ export default function Showcase() {
               <div className="relative w-[302px]">
                 <Phone>
                   {ITEMS.map((it, i) => (
-                    <Layer key={it.title} p={scrollYProgress} i={i} n={ITEMS.length}>
+                    <Layer key={it.title} p={scrollYProgress} i={i} n={ITEMS.length} grid="spread">
                       {it.screen}
                     </Layer>
                   ))}
@@ -265,6 +267,7 @@ function Layer({
   i,
   n,
   soft = false,
+  grid = 'even',
 }: {
   children: ReactNode
   p: MotionValue<number>
@@ -272,22 +275,29 @@ function Layer({
   n: number
   /** Text needs a gentler push than a device screen, or it reads as a slideshow. */
   soft?: boolean
+  /**
+   * 'even' divides the scroll into n equal beats — right when everything
+   * crossfades in place (the mobile stage). 'spread' centres beat i at
+   * i/(n-1), matching a copy column whose n blocks hand off at (n-1) gaps —
+   * the desktop layout. With 'even' there, the last swaps landed a third of
+   * a viewport before the copy did, which read as the screen changing while
+   * you were still mid-paragraph.
+   */
+  grid?: 'even' | 'spread'
 }) {
-  const step = 1 / n
-  const s = i * step
   const first = i === 0
   const last = i === n - 1
 
-  // The first screen is already on when the section pins; the last one stays on
-  // when it releases. Everything else swaps in a narrow window centred on the
-  // beat boundary — the old window started the next screen at 66% of the
-  // current beat, double-exposing the device while its copy was still being
-  // read. Each screen now holds pure for 76% of its beat.
-  const inA = first ? 0 : s - step * 0.12
-  const inB = first ? 0 : s + step * 0.12
-  const mid = s + step * 0.5
-  const outA = last ? 1 : s + step * 0.88
-  const outB = last ? 1 : s + step * 1.12
+  // The beat's centre and half-dwell on the chosen grid, and a blend
+  // half-width of 24% of the half-dwell — the swap is a narrow window centred
+  // exactly where this beat hands off to the next.
+  const half = grid === 'spread' ? 0.5 / (n - 1) : 0.5 / n
+  const mid = grid === 'spread' ? i / (n - 1) : (i + 0.5) / n
+  const h = half * 0.24
+  const inA = first ? 0 : mid - half - h
+  const inB = first ? 0 : mid - half + h
+  const outA = last ? 1 : mid + half - h
+  const outB = last ? 1 : mid + half + h
   const shift = soft ? 14 : 26
   const zoom = soft ? 0.02 : 0.05
 
