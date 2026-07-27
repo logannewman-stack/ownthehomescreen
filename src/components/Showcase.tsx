@@ -279,12 +279,15 @@ function Layer({
   const last = i === n - 1
 
   // The first screen is already on when the section pins; the last one stays on
-  // when it releases. Everything else crossfades through its own window.
-  const inA = first ? 0 : s - step * 0.34
-  const inB = first ? 0 : s + step * 0.14
+  // when it releases. Everything else swaps in a narrow window centred on the
+  // beat boundary — the old window started the next screen at 66% of the
+  // current beat, double-exposing the device while its copy was still being
+  // read. Each screen now holds pure for 76% of its beat.
+  const inA = first ? 0 : s - step * 0.12
+  const inB = first ? 0 : s + step * 0.12
   const mid = s + step * 0.5
-  const outA = last ? 1 : s + step * 0.86
-  const outB = last ? 1 : s + step * 1.34
+  const outA = last ? 1 : s + step * 0.88
+  const outB = last ? 1 : s + step * 1.12
   const shift = soft ? 14 : 26
   const zoom = soft ? 0.02 : 0.05
 

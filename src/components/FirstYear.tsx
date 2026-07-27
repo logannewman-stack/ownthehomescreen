@@ -183,11 +183,13 @@ function Beat({ children, i, p, live }: { children: ReactNode; i: number; p: Mot
   const first = i === 0
   const last = i === N - 1
 
-  const inA = first ? 0 : s - step * 0.32
-  const inB = first ? 0 : s + step * 0.16
+  // Narrow swap around the boundary, matching the showcase: each moment holds
+  // pure for most of its dwell instead of double-exposing with its neighbour.
+  const inA = first ? 0 : s - step * 0.16
+  const inB = first ? 0 : s + step * 0.12
   const mid = s + step * 0.5
-  const outA = last ? 1 : s + step * 0.84
-  const outB = last ? 1 : s + step * 1.32
+  const outA = last ? 1 : s + step * 0.88
+  const outB = last ? 1 : s + step * 1.16
 
   const win = stops(0, inA, inB, mid, outA, outB, 1)
   const opacity = useTransform(
