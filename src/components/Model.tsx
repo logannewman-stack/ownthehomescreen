@@ -5,7 +5,7 @@ import { Button, Eyebrow, Reveal, Section } from './ui'
 /*
  * The assumptions, stated in the open. Change them here and the page follows.
  * These are the same two behavioural lifts the results chart is built from
- * (8.1 → 11.2 orders is +38%, and a 12% larger basket), so the calculator and
+ * (8.1 → 11.2 orders is +38%, and a 12% larger ticket), so the calculator and
  * the chart agree: 1.38 × 1.12 = 1.55× the revenue per app customer.
  */
 const ADOPTION = 0.35 // share of your customers who install within a year

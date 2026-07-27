@@ -72,7 +72,7 @@ export default function Metrics() {
         <p className="mt-10 max-w-[74ch] text-[0.8125rem] leading-relaxed text-faint">
           One model, one set of assumptions, stated in full above: a {usd(AOV)} ticket, {WEB_ORDERS.toFixed(1)}{' '}
           orders a year without an app and {APP_ORDERS.toFixed(1)} with one, at a{' '}
-          {Math.round(BASKET_LIFT * 100)}% larger basket. The order frequencies come from widely reported
+          {Math.round(BASKET_LIFT * 100)}% larger average ticket. The order frequencies come from widely reported
           app-versus-web engagement benchmarks — they are not a forecast for your business. Before you commit
           to anything we rebuild this on your real order data, with your ticket size and your repeat rate.
         </p>
@@ -327,7 +327,7 @@ function GrowthChart() {
           { k: 'Orders, web & email', v: WEB_ORDERS.toFixed(1), n: 'in the first 12 months' },
           { k: 'Orders, with the app', v: APP_ORDERS.toFixed(1), n: `+${(APP_ORDERS - WEB_ORDERS).toFixed(1)} per customer` },
           {
-            k: 'Basket in the app',
+            k: 'Ticket in the app',
             v: `+${Math.round(BASKET_LIFT * 100)}%`,
             n: `${usd(APP_AOV)} against ${usd(AOV)}`,
           },
@@ -419,7 +419,7 @@ const TILES: Tile[] = [
     spark: [30, 33, 32, 38, 41, 45, 44, 52, 57, 61, 68, 72],
   },
   {
-    label: 'Average basket',
+    label: 'Average ticket',
     to: APP_AOV,
     decimals: 2,
     prefix: '$',

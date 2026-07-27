@@ -306,7 +306,7 @@ function HabitVisual({ on }: { on: boolean }) {
           +{FREQ_LIFT_PCT}% more orders a year
         </span>
         <span className="rounded-full border border-white/15 px-3.5 py-1.5 text-[0.75rem] font-medium text-white/85">
-          ${Math.round(APP_AOV)} average basket, up from $58
+          ${Math.round(APP_AOV)} average ticket, up from $58
         </span>
       </div>
     </div>

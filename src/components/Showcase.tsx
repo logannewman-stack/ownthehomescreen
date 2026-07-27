@@ -49,7 +49,7 @@ const ITEMS: Item[] = [
   },
   {
     kicker: 'Spend',
-    title: 'A bigger basket, quietly.',
+    title: 'A bigger ticket, quietly.',
     body: 'Stored payment, memberships and one-tap add-ons. When paying takes no thought, the upsell stops feeling like a sales pitch and starts feeling like a convenience.',
     points: ['Stored cards and wallets', 'Memberships and prepaid balances', 'Add-ons at the moment of yes'],
     outcome: 'Higher average order value',

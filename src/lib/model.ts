@@ -4,7 +4,7 @@
  * constants, so no two sections can ever quote numbers that disagree.
  */
 
-/** Average order value, and the larger basket an app customer tends to build. */
+/** Average order value, and the larger ticket an app customer tends to run. */
 export const AOV = 58
 export const BASKET_LIFT = 0.12
 export const APP_AOV = AOV * (1 + BASKET_LIFT)
