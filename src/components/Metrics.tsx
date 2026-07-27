@@ -87,7 +87,11 @@ export default function Metrics() {
 
 function GrowthChart() {
   const ref = useRef<HTMLDivElement>(null)
-  const p = useSmoothProgress(ref, ['start 0.85', 'end 0.62'])
+  // The draw finishes by the time the plot's top reaches 45% of the viewport —
+  // previously it needed the whole plot to clear the lower third, which left
+  // the line unfinished and the endpoint figures missing while the chart was
+  // already the centre of attention.
+  const p = useSmoothProgress(ref, ['start 0.92', 'start 0.45'])
   const reduce = useReducedMotion()
   const [hover, setHover] = useState<number | null>(null)
 
@@ -100,7 +104,8 @@ function GrowthChart() {
   // The tip marker comes to rest exactly on the endpoint, so it doubles as the
   // emphasis series' end dot — no second circle needed.
   const dotOpacity = useTransform(p, [0, 0.04], [0, 1])
-  const endOpacity = useTransform(p, [0.86, 1], [0, 1])
+  // Endpoint figures anticipate the tip instead of trailing it.
+  const endOpacity = useTransform(p, [0.68, 0.86], [0, 1])
 
   const onMove = (e: ReactPointerEvent<HTMLDivElement>) => {
     const r = e.currentTarget.getBoundingClientRect()
@@ -435,6 +440,7 @@ function StatTile({ label, to, decimals = 0, prefix = '', suffix = '', note, spa
           decimals={decimals}
           prefix={prefix}
           suffix={suffix}
+          duration={1.3}
           replay
           className="font-display text-[clamp(2.5rem,3.4vw,3.25rem)] font-semibold leading-[0.9] tracking-[-0.045em] text-ink-900"
         />
