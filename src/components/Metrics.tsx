@@ -50,10 +50,10 @@ export default function Metrics() {
       <div className="shell">
         <Reveal className="max-w-[52rem]">
           <Eyebrow>The results</Eyebrow>
-          <h2 className="type-1 mt-6 text-balance text-ink-900">Everything moves in the same direction.</h2>
+          <h2 className="type-1 mt-6 text-balance text-ink-900">More orders, bigger tickets, customers who stay.</h2>
           <p className="lede mt-6 max-w-[46ch]">
-            Owning your customers&apos; home screens doesn&apos;t just add another way to buy. It removes
-            every reason not to — and that compounds in the four numbers you already watch.
+            When your app is one tap away, customers order more often and spend more when they do. This
+            chart is one customer&apos;s first year — with your app, and without it.
           </p>
         </Reveal>
 

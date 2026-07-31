@@ -18,15 +18,15 @@ const ITEMS: Item[] = [
   {
     kicker: 'Their home screen',
     title: 'Prime real estate, permanently.',
-    body: 'Your brand sits between their bank and their messages — the six inches of glass they check 96 times a day. No algorithm decides who sees you. No bid. No feed.',
-    points: ['Your name, your mark', 'Zero acquisition cost per open', 'Nobody can outbid you'],
+    body: 'Your icon sits between their bank and their messages — on the screen they check 96 times a day. No algorithm decides whether they see you.',
+    points: ['Your name and your logo', 'Opens cost you nothing', 'Nobody can outbid you'],
     outcome: 'Always one tap from a purchase',
     screen: <HomeScreen delay={0.1} />,
   },
   {
     kicker: 'Reordering',
     title: 'One tap to buy again.',
-    body: 'Their last order, saved. Their card, saved. Their pickup time, remembered. Repeat purchases die in the gap between wanting something and getting it — so we delete the gap.',
+    body: 'Their last order, their card and their usual time are already saved. When buying again takes ten seconds, people do it more often.',
     points: ['Saved order + saved card', 'Reorder in a single tap', 'Live prep and delivery status'],
     outcome: '+3.1 orders per customer, per year',
     screen: <ReorderScreen />,
@@ -34,15 +34,15 @@ const ITEMS: Item[] = [
   {
     kicker: 'Loyalty',
     title: 'A reason to come back on a Tuesday.',
-    body: 'Points, streaks and tiers that make the next visit feel earned. Progress a customer can see is progress a customer finishes — and every reward is a scheduled return visit.',
-    points: ['Points, tiers and streaks', 'Rewards that expire on purpose', 'Referral credit built in'],
+    body: 'When a free reward is 300 points away, the next visit is already decided. Points and streaks turn occasional customers into regulars.',
+    points: ['Points, tiers and streaks', 'Rewards that bring them back', 'Referral credit built in'],
     outcome: '+38% more orders a year',
     screen: <RewardsScreen />,
   },
   {
     kicker: 'Booking',
     title: 'Bookings without the phone call.',
-    body: 'Live availability, instant confirmation, deposits taken up front. Your calendar fills while your team keeps working, and the 9pm booker never has to wait until morning.',
+    body: 'Live availability, instant confirmation, deposits taken up front. The 9pm booking happens at 9pm, and your calendar fills itself.',
     points: ['Real-time availability', 'Deposits and no-show protection', 'Automatic reminders'],
     outcome: 'Fewer no-shows, zero hold music',
     screen: <BookScreen />,
@@ -50,16 +50,16 @@ const ITEMS: Item[] = [
   {
     kicker: 'Spend',
     title: 'A bigger ticket, quietly.',
-    body: 'Stored payment, memberships and one-tap add-ons. When paying takes no thought, the upsell stops feeling like a sales pitch and starts feeling like a convenience.',
-    points: ['Stored cards and wallets', 'Memberships and prepaid balances', 'Add-ons at the moment of yes'],
+    body: 'Cards are saved, memberships renew on their own, and add-ons are one tap at checkout. Customers say yes to more when saying yes is effortless.',
+    points: ['Stored cards and wallets', 'Memberships and prepaid balances', 'One-tap add-ons at checkout'],
     outcome: 'Higher average order value',
     screen: <WalletScreen />,
   },
   {
     kicker: 'Push',
     title: 'A channel you own, not rent.',
-    body: 'Push arrives on the lock screen. Email arrives in Promotions, three days late, if at all. Once the app is installed you stop paying, every single time, to reach people who already chose you.',
-    points: ['Lock-screen reach', 'Segmented by real behavior', 'No media spend, no algorithm'],
+    body: 'A push notification lands on their lock screen in seconds, and sending one costs you nothing. Email gets buried and ads charge you every time — push is free, and it gets seen.',
+    points: ['Lands on the lock screen', 'Goes to the right customers automatically', 'No ad spend, ever'],
     outcome: 'Roughly 6× the open rate of email',
     screen: <LockScreen />,
   },
@@ -84,9 +84,9 @@ export default function Showcase() {
           <Eyebrow>The app</Eyebrow>
           <h2 className="type-1 mt-6 text-balance text-ink-900">Six screens that bring them back.</h2>
           <p className="lede mt-6 max-w-[50ch]">
-            Ordering, loyalty, booking, payments and push — the work of a loyalty program, a call center
-            and a marketing budget, in one app. Every build is designed around your business, not a
-            template; this is the shape it usually takes.
+            Ordering, rewards, booking, payments and push notifications — one app doing the work of a
+            loyalty program, a front desk and a marketing budget. Every build is designed around your
+            business, not a template — these six screens are the usual shape.
           </p>
         </Reveal>
       </div>

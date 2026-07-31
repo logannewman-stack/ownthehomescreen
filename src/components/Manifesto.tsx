@@ -40,13 +40,13 @@ export default function Manifesto() {
               You stop paying, forever, to reach people who already chose you.
             </h3>
             <p className="mt-6 max-w-[44ch] text-[1.0625rem] leading-relaxed text-white/60">
-              Every campaign you run to an installed base is free. Every reminder, every restock, every
-              cancellation you fill — sent from an asset you own, to a screen you already earned.
+              Every message you send through the app is free. Reminders, rewards, last-minute openings —
+              straight to the lock screen of every customer who installed it.
             </p>
             <dl className="mt-12 grid grid-cols-2 gap-x-8 gap-y-10 border-t border-white/10 pt-10">
               {[
                 { v: 96, suffix: '×', l: 'Times a day the average person checks their phone' },
-                { v: 0, prefix: '$', l: 'Media spend to reach an installed customer' },
+                { v: 0, prefix: '$', l: 'Cost to message a customer through your app' },
               ].map((s) => (
                 <div key={s.l}>
                   <dd className="font-display text-[clamp(2.25rem,3.4vw,3.25rem)] font-semibold leading-none tracking-[-0.045em] text-white">

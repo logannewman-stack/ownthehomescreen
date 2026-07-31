@@ -5,7 +5,7 @@ const CAPABILITIES = [
   {
     icon: 'home',
     title: 'Native iOS and Android',
-    body: 'One codebase, both stores, submitted and approved by us. It looks and moves like an app people paid for.',
+    body: 'One codebase, both app stores, submitted and approved by us — fast, polished and native on every phone.',
   },
   {
     icon: 'user',
@@ -20,7 +20,7 @@ const CAPABILITIES = [
   {
     icon: 'star',
     title: 'Loyalty and rewards',
-    body: 'Points, tiers, streaks and referral credit — tuned so the next visit always feels close.',
+    body: 'Points, tiers, streaks and referral credit that keep the next visit on their mind.',
   },
   {
     icon: 'calendar',
@@ -29,8 +29,8 @@ const CAPABILITIES = [
   },
   {
     icon: 'bell',
-    title: 'Push and lifecycle',
-    body: 'Segmented campaigns triggered by real behavior: lapsed, loyal, nearly-due, cart left open.',
+    title: 'Push and campaigns',
+    body: 'Automatic messages based on what customers do: gone quiet, due for a visit, left a cart open.',
   },
   {
     icon: 'gear',
@@ -40,7 +40,7 @@ const CAPABILITIES = [
   {
     icon: 'sparkle',
     title: 'Numbers you will actually read',
-    body: 'Retention cohorts, repeat rate and lifetime value on one page, in plain language, every month.',
+    body: 'Retention, repeat rate and lifetime value on one page, in plain language, every month.',
   },
   {
     icon: 'check',
@@ -57,7 +57,7 @@ export default function Build() {
           <Eyebrow>What we build</Eyebrow>
           <h2 className="type-1 mt-6 text-balance text-ink-900">Everything in. Nothing to assemble.</h2>
           <p className="lede mt-6 max-w-[46ch]">
-            No plugin stack, no template you have to grow out of, no third invoice you didn&apos;t expect.
+            One team builds all of it — no templates, no plugins bolted together, no surprise add-on costs.
           </p>
         </Reveal>
 

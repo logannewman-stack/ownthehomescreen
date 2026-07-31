@@ -38,14 +38,14 @@ const MOMENTS: Moment[] = [
     when: 'Month 3',
     tick: 'M3',
     title: 'Your ad budget starts to breathe.',
-    body: 'A push notification reaches the lock screen of every phone you’re installed on — and costs you nothing. You stop renting attention to talk to people who already chose you.',
+    body: 'A push notification reaches every phone your app is installed on — and sending it costs nothing. You stop paying for ads just to talk to your own customers.',
     visual: (on) => <PushVisual on={on} />,
   },
   {
     when: 'Month 8',
     tick: 'M8',
     title: 'They stay.',
-    body: 'Customers drift when coming back takes effort. Yours are one tap away, so they don’t. Eight months in, app customers are still ordering at 93% of the pace a new customer sets — everyone else is down to 59%, and falling.',
+    body: 'Customers drift when coming back takes effort. Yours are one tap away, so they don’t. Eight months in, app customers are still ordering at 93% of a new customer’s pace — everyone else is down to 59%, and still falling.',
     visual: (on) => <StayVisual on={on} />,
   },
   {

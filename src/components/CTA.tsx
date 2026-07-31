@@ -37,8 +37,8 @@ export default function CTA() {
           stagger={0.085}
         />
         <p className="lede mx-auto mt-7 max-w-[44ch] text-balance text-white/60">
-          One call, forty-five minutes. We map how your customers come back and show you what owning
-          their home screens is worth — on your real numbers, before you spend anything.
+          One call, forty-five minutes. We look at how your customers come back today, and show you what
+          an app would be worth — on your real numbers, before you spend anything.
         </p>
         <div className="mt-10 flex flex-wrap items-center justify-center gap-x-7 gap-y-4">
           <Button size="lg" variant="light">

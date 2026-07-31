@@ -5,17 +5,17 @@ const REPORTED = [
   {
     icon: 'user',
     title: 'Who came back',
-    body: 'Cohort retention by month, app versus everyone else. The single number that tells you whether the app is working.',
+    body: 'How many of your customers are still buying each month, app users against everyone else — the clearest sign the app is working.',
   },
   {
     icon: 'bag',
     title: 'How often they bought',
-    body: 'Orders per active customer, and the gap between orders shrinking. Frequency is where the compounding starts.',
+    body: 'Orders per customer, and the time between orders getting shorter. This is where the growth comes from.',
   },
   {
     icon: 'card',
     title: 'What each one is worth',
-    body: 'Lifetime value by cohort, tracked against the model we built in your blueprint. Forecast versus actual, every month.',
+    body: 'What the average customer spends over their lifetime, tracked against the projection from your blueprint — forecast against actual, every month.',
   },
 ]
 
@@ -28,7 +28,7 @@ export default function Proof() {
           <Eyebrow>Why we do it this way</Eyebrow>
         </Reveal>
         <ScrollLit
-          text="An app is not a marketing campaign. It is your place on your customer's home screen — the only software they choose to keep, and the only channel you never have to buy back. We build it like it matters, and we report on the three numbers that prove it."
+          text="An app is not a marketing campaign. It is your place on your customer's home screen — the only software they choose to keep, and a direct line to them that nobody can take away. We build it like it matters, and we report the three numbers that prove it is working."
           className="mt-8 max-w-[40ch] font-display text-[clamp(1.625rem,3.6vw,3rem)] font-semibold leading-[1.08] tracking-[-0.04em] text-ink-900"
         />
 

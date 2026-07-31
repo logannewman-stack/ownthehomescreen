@@ -9,7 +9,7 @@ const STEPS = [
     when: 'Week one',
     short: 'Week 1',
     title: 'Blueprint',
-    body: 'We map how your customers actually come back — the systems you run, the habits worth building, the revenue sitting in your repeat rate. You leave with a spec, a fixed price, and the growth model built on your own order data.',
+    body: 'We sit down with your business: how customers find you, how they come back, and what you run today. You leave with a plan for the app, a fixed price, and a revenue projection built on your own sales data.',
     deliver: ['Customer journey map', 'Fixed scope and price', 'Revenue model on your numbers'],
   },
   {

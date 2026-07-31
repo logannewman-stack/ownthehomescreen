@@ -42,11 +42,11 @@ export default function Model() {
     <Section id="model" tone="white" className="py-[clamp(84px,10vw,156px)]">
       <div className="shell">
         <Reveal className="max-w-[48rem]">
-          <Eyebrow>The maths</Eyebrow>
+          <Eyebrow>The math</Eyebrow>
           <h2 className="type-1 mt-6 text-balance text-ink-900">Run it on your own numbers.</h2>
           <p className="lede mt-6 max-w-[46ch]">
-            Three inputs you already know. Move them and watch what owning a third of your
-            customers&apos; home screens does to a year.
+            Three numbers you already know. Slide them and see what a year of revenue looks like
+            when a third of your customers are ordering through your app.
           </p>
         </Reveal>
 
