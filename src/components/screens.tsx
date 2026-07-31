@@ -1,6 +1,7 @@
-import { animate, motion, useInView, useReducedMotion } from 'framer-motion'
+import { motion, useInView, useReducedMotion } from 'framer-motion'
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { HomeBar, Island, StatusBar } from './Phone'
+import { BrandIcon } from './ui'
 
 /* ================================================================== *
  * Line-art glyphs used inside the app UI and on the icon grid.
@@ -145,67 +146,6 @@ export function Glyph({
 }
 
 /* ================================================================== *
- * The demo client's brand. The site chrome stays monochrome; inside the
- * device everything interactive carries the client's color, because the
- * pitch is "your brand lives here" — not ours.
- * ================================================================== */
-
-const BRAND = '#114559' // deep petrol — Northside Detail Co.
-
-export function ClientIcon({ className = '', tone = 'brand' }: { className?: string; tone?: 'brand' | 'light' }) {
-  const bg = tone === 'brand' ? BRAND : '#ffffff'
-  const fg = tone === 'brand' ? '#ffffff' : BRAND
-  return (
-    <svg viewBox="0 0 64 64" className={className} aria-hidden="true">
-      <rect width="64" height="64" rx="15" fill={bg} />
-      <path
-        d="M29 15C29 15 16.5 29 16.5 38a12.5 12.5 0 0 0 25 0C41.5 29 29 15 29 15Z"
-        fill="none"
-        stroke={fg}
-        strokeWidth="3.4"
-        strokeLinejoin="round"
-        strokeLinecap="round"
-      />
-      <path d="M46.5 15l1.7 4.3 4.3 1.7-4.3 1.7-1.7 4.3-1.7-4.3-4.3-1.7 4.3-1.7Z" fill={fg} />
-    </svg>
-  )
-}
-
-function CountUp({
-  to,
-  on,
-  prefix = '',
-  delay = 0,
-  duration = 1.5,
-  className = '',
-}: {
-  to: number
-  on: boolean
-  prefix?: string
-  delay?: number
-  duration?: number
-  className?: string
-}) {
-  const [v, setV] = useState(0)
-  const reduce = useReducedMotion()
-  useEffect(() => {
-    if (!on) return
-    if (reduce) {
-      setV(to)
-      return
-    }
-    const c = animate(0, to, { duration, delay, ease: [0.16, 1, 0.3, 1], onUpdate: (x) => setV(Math.round(x)) })
-    return () => c.stop()
-  }, [on, to, reduce, delay, duration])
-  return (
-    <span className={className}>
-      {prefix}
-      {v.toLocaleString('en-US')}
-    </span>
-  )
-}
-
-/* ================================================================== *
  * Shared app furniture
  * ================================================================== */
 
@@ -231,7 +171,7 @@ function TabBar({ active = 0 }: { active?: number }) {
         {tabs.map((t, i) => (
           <div
             key={t.label}
-            className={`flex flex-1 flex-col items-center gap-[1cqw] ${i === active ? 'text-[#114559]' : 'text-[#b6b6bc]'}`}
+            className={`flex flex-1 flex-col items-center gap-[1cqw] ${i === active ? 'text-ink-900' : 'text-[#b6b6bc]'}`}
           >
             <Glyph name={t.icon} className="h-[6.2cqw] w-[6.2cqw]" width={i === active ? 1.9 : 1.6} />
             <span className={`text-[2.6cqw] tracking-[-0.01em] ${i === active ? 'font-semibold' : 'font-medium'}`}>
@@ -255,7 +195,7 @@ function Card({ children, className = '' }: { children: ReactNode; className?: s
 function PrimaryButton({ children, className = '' }: { children: ReactNode; className?: string }) {
   return (
     <div
-      className={`flex h-[13cqw] items-center justify-center gap-[2cqw] rounded-full bg-[#114559] text-[4cqw] font-semibold tracking-[-0.015em] text-white ${className}`}
+      className={`flex h-[13cqw] items-center justify-center gap-[2cqw] rounded-full bg-ink-900 text-[4cqw] font-semibold tracking-[-0.015em] text-white ${className}`}
     >
       {children}
     </div>
@@ -389,22 +329,10 @@ function IconTile({
         }}
       >
         {emphasis ? (
-          <span className="absolute inset-0 rounded-[4.6cqw] bg-[#114559]/30 animate-ring" style={{ animationDelay: `${delay}s` }} />
+          <span className="absolute inset-0 rounded-[4.6cqw] bg-ink-900/25 animate-ring" style={{ animationDelay: `${delay}s` }} />
         ) : null}
         {brand ? (
-          <>
-            <ClientIcon className={`relative ${size} rounded-[4.6cqw] shadow-icon`} />
-            {emphasis ? (
-              <motion.span
-                className="absolute -right-[1.6cqw] -top-[1.6cqw] flex h-[5cqw] min-w-[5cqw] items-center justify-center rounded-full bg-[#114559] px-[1.2cqw] text-[2.7cqw] font-semibold leading-none text-white shadow-[0_1cqw_2cqw_rgba(0,0,0,0.22)]"
-                initial={{ scale: 0 }}
-                animate={on ? { scale: 1 } : undefined}
-                transition={{ type: 'spring', stiffness: 400, damping: 18, delay: delay + 1.15 }}
-              >
-                1
-              </motion.span>
-            ) : null}
-          </>
+          <BrandIcon className={`relative ${size} rounded-[4.6cqw] shadow-icon`} />
         ) : (
           <div
             className={`relative flex ${size} items-center justify-center rounded-[4.6cqw] border border-white/70 bg-white/70 text-[#b9b9c1] shadow-[0_1.5cqw_3cqw_-1.5cqw_rgba(0,0,0,0.18)] backdrop-blur-sm`}
@@ -432,8 +360,8 @@ function IconTile({
 /** Rotating push notification — the retention loop, visible. */
 function NotificationStack({ delay = 0, brandName = 'Northside' }: { delay?: number; brandName?: string }) {
   const messages = [
-    { t: 'Time for your usual wash', b: 'Signature wash · Thu 4:30 is open' },
-    { t: 'You have 2,480 points', b: '320 more unlocks a free wash' },
+    { t: 'Your usual is ready to reorder', b: 'Flat white + croissant · 6 min' },
+    { t: 'You have 2,480 points', b: '320 more unlocks a free drink' },
     { t: 'Tuesday, 4:30pm still works?', b: 'Tap to confirm your booking' },
   ]
   const [i, setI] = useState(0)
@@ -462,7 +390,7 @@ function NotificationStack({ delay = 0, brandName = 'Northside' }: { delay?: num
         transition={{ type: 'spring', stiffness: 220, damping: 26 }}
         className="flex items-center gap-[2.8cqw] rounded-[5.4cqw] border border-white/70 bg-white/80 p-[2.8cqw] shadow-[0_4cqw_10cqw_-4cqw_rgba(0,0,0,0.28)] backdrop-blur-2xl"
       >
-        <ClientIcon className="h-[9cqw] w-[9cqw] shrink-0 rounded-[2.7cqw]" />
+        <BrandIcon className="h-[9cqw] w-[9cqw] shrink-0 rounded-[2.7cqw]" />
         <div className="min-w-0 grow">
           <div className="flex items-baseline justify-between gap-[2cqw]">
             <span className="truncate text-[3.2cqw] font-semibold tracking-[-0.015em] text-ink-900">{brandName}</span>
@@ -481,13 +409,8 @@ function NotificationStack({ delay = 0, brandName = 'Northside' }: { delay?: num
  * ================================================================== */
 
 export function ReorderScreen() {
-  const ref = useRef<HTMLDivElement>(null)
-  const inView = useInView(ref, { once: true, margin: '-10%' })
-  const reduce = useReducedMotion()
-  const on = reduce || inView
-
   return (
-    <div ref={ref} className="absolute inset-0 overflow-hidden bg-[#fbfbfd]">
+    <div className="absolute inset-0 overflow-hidden bg-[#fbfbfd]">
       <Island />
       <StatusBar />
       <AppHeader
@@ -500,27 +423,22 @@ export function ReorderScreen() {
       />
 
       <div className="space-y-[3.4cqw] px-[5.5cqw]">
-        {/* The hero card: their usual service, one tap away */}
-        <motion.div
-          initial={{ opacity: 0, y: 14 }}
-          animate={on ? { opacity: 1, y: 0 } : undefined}
-          transition={{ type: 'spring', stiffness: 200, damping: 26, delay: 0.15 }}
-        >
+        {/* The hero card: their usual order, one tap away */}
         <Card className="overflow-hidden p-[4.6cqw]">
           <div className="flex items-center justify-between">
             <span className="text-[2.9cqw] font-semibold uppercase tracking-[0.16em] text-ink-900/40">Your usual</span>
-            <span className="flex items-center gap-[1.2cqw] rounded-full bg-[#114559]/[0.08] px-[2.4cqw] py-[1cqw] text-[2.8cqw] font-semibold text-[#114559]">
-              <Glyph name="calendar" className="h-[3.4cqw] w-[3.4cqw]" />Thu 4:30
+            <span className="flex items-center gap-[1.2cqw] rounded-full bg-ink-900/[0.05] px-[2.4cqw] py-[1cqw] text-[2.8cqw] font-semibold text-ink-900/70">
+              <Glyph name="clock" className="h-[3.4cqw] w-[3.4cqw]" />6 min
             </span>
           </div>
 
           <div className="mt-[3.4cqw] space-y-[2.6cqw]">
             {[
-              { icon: 'sparkle', n: 'Signature wash', d: 'Exterior · ceramic boost' },
-              { icon: 'star', n: 'Interior refresh', d: 'Vacuum + trim wipe-down' },
+              { icon: 'coffee', n: 'Flat white', d: 'Oat · extra shot' },
+              { icon: 'bag', n: 'Almond croissant', d: 'Warmed' },
             ].map((it) => (
               <div key={it.n} className="flex items-center gap-[3cqw]">
-                <div className="flex h-[10cqw] w-[10cqw] items-center justify-center rounded-[3.2cqw] bg-[#EAF2F4] text-[#114559]">
+                <div className="flex h-[10cqw] w-[10cqw] items-center justify-center rounded-[3.2cqw] bg-[#f2f2f5] text-ink-900">
                   <Glyph name={it.icon} className="h-[5.4cqw] w-[5.4cqw]" />
                 </div>
                 <div className="grow">
@@ -535,26 +453,16 @@ export function ReorderScreen() {
           <div className="mt-[3.8cqw] flex items-center justify-between border-t border-black/[0.06] pt-[3.4cqw]">
             <div>
               <p className="text-[2.8cqw] font-medium text-ink-900/45">Total with points</p>
-              <p className="font-display text-[5.4cqw] font-semibold tracking-[-0.03em] text-ink-900">$62.40</p>
+              <p className="font-display text-[5.4cqw] font-semibold tracking-[-0.03em] text-ink-900">$12.40</p>
             </div>
-            <span className="text-[2.9cqw] font-medium text-ink-900/35 line-through">$69.90</span>
+            <span className="text-[2.9cqw] font-medium text-ink-900/35 line-through">$16.90</span>
           </div>
 
-          <div className="relative mt-[3.4cqw] overflow-hidden rounded-full">
-            <PrimaryButton>
-              Reorder
-              <Glyph name="arrow" className="h-[4.4cqw] w-[4.4cqw]" width={2} />
-            </PrimaryButton>
-            {/* One quiet sheen once the card has settled — an invitation, not a strobe */}
-            <motion.span
-              className="pointer-events-none absolute inset-y-0 w-[38%] skew-x-[-18deg] bg-white/25 blur-[2px]"
-              initial={{ left: '-45%' }}
-              animate={on ? { left: '125%' } : undefined}
-              transition={{ duration: 1.1, delay: 1.3, ease: [0.6, 0, 0.2, 1] }}
-            />
-          </div>
+          <PrimaryButton className="mt-[3.4cqw]">
+            Reorder
+            <Glyph name="arrow" className="h-[4.4cqw] w-[4.4cqw]" width={2} />
+          </PrimaryButton>
         </Card>
-        </motion.div>
 
         {/* Recent */}
         <div>
@@ -563,10 +471,10 @@ export function ReorderScreen() {
           </p>
           <Card className="divide-y divide-black/[0.055] overflow-hidden">
             {[
-              { n: 'Signature wash', d: 'Last Thursday', p: '$58.00' },
-              { n: 'Ceramic boost add-on', d: 'Aug 2', p: '$89.00' },
-              { n: 'Interior refresh', d: 'Jul 18', p: '$24.00' },
-              { n: 'Express wash', d: 'Jul 3', p: '$19.00' },
+              { n: 'Cold brew, large', d: 'Last Thursday', p: '$5.20' },
+              { n: 'Breakfast bagel', d: 'Aug 12', p: '$9.80' },
+              { n: 'Espresso ×2', d: 'Aug 9', p: '$6.00' },
+              { n: 'Matcha latte', d: 'Aug 4', p: '$6.40' },
             ].map((r) => (
               <div key={r.n} className="flex items-center gap-[3cqw] px-[4.2cqw] py-[3.1cqw]">
                 <div className="grow">
@@ -608,7 +516,7 @@ export function RewardsScreen() {
       <AppHeader
         title="Rewards"
         right={
-          <span className="mb-[1cqw] rounded-full border border-[#C4913C]/45 bg-[#C4913C]/[0.08] px-[2.8cqw] py-[1.1cqw] text-[2.8cqw] font-semibold uppercase tracking-[0.14em] text-[#8A6420]">
+          <span className="mb-[1cqw] rounded-full border border-black/10 px-[2.8cqw] py-[1.1cqw] text-[2.8cqw] font-semibold uppercase tracking-[0.14em] text-ink-900/70">
             Gold
           </span>
         }
@@ -618,13 +526,13 @@ export function RewardsScreen() {
         <Card className="p-[5cqw] text-center">
           <div className="relative mx-auto h-[42cqw] w-[42cqw]">
             <svg viewBox="0 0 100 100" className="h-full w-full -rotate-90">
-              <circle cx="50" cy="50" r="43" fill="none" stroke="#E3EDF0" strokeWidth="6" />
+              <circle cx="50" cy="50" r="43" fill="none" stroke="#ececef" strokeWidth="6" />
               <motion.circle
                 cx="50"
                 cy="50"
                 r="43"
                 fill="none"
-                stroke="#114559"
+                stroke="#1d1d1f"
                 strokeWidth="6"
                 strokeLinecap="round"
                 strokeDasharray={C}
@@ -634,31 +542,27 @@ export function RewardsScreen() {
               />
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <CountUp
-                to={2480}
-                on={reduce || inView}
-                delay={0.25}
-                duration={1.6}
-                className="font-display text-[11cqw] font-semibold leading-none tracking-[-0.045em] text-ink-900"
-              />
+              <span className="font-display text-[11cqw] font-semibold leading-none tracking-[-0.045em] text-ink-900">
+                2,480
+              </span>
               <span className="mt-[1.4cqw] text-[2.9cqw] font-semibold uppercase tracking-[0.16em] text-ink-900/40">
                 points
               </span>
             </div>
           </div>
           <p className="mx-auto mt-[3.4cqw] max-w-[70cqw] text-[3.4cqw] font-medium leading-[1.35] tracking-[-0.015em] text-ink-900/60">
-            320 points from your next free wash
+            320 points from your next free drink
           </p>
         </Card>
 
         <div className="mt-[3.4cqw] grid grid-cols-3 gap-[2.6cqw]">
           {[
-            { icon: 'sparkle', n: 'Free wash', p: '2,800' },
-            { icon: 'gift', n: '20% off add-ons', p: '3,500' },
-            { icon: 'clock', n: 'Priority slot', p: '4,000' },
+            { icon: 'coffee', n: 'Free drink', p: '2,800' },
+            { icon: 'gift', n: '20% off', p: '3,500' },
+            { icon: 'truck', n: 'Free ship', p: '4,000' },
           ].map((r, i) => (
-            <Card key={r.n} className={`p-[3.2cqw] text-center ${i === 0 ? 'border-[#114559]/30' : ''}`}>
-              <div className="mx-auto flex h-[9.6cqw] w-[9.6cqw] items-center justify-center rounded-full bg-[#EAF2F4] text-[#114559]">
+            <Card key={r.n} className={`p-[3.2cqw] text-center ${i === 0 ? 'border-ink-900/25' : ''}`}>
+              <div className="mx-auto flex h-[9.6cqw] w-[9.6cqw] items-center justify-center rounded-full bg-[#f2f2f5] text-ink-900">
                 <Glyph name={r.icon} className="h-[5cqw] w-[5cqw]" />
               </div>
               <p className="mt-[2cqw] text-[3cqw] font-semibold leading-tight tracking-[-0.015em] text-ink-900">{r.n}</p>
@@ -679,7 +583,7 @@ export function RewardsScreen() {
               {[38, 52, 44, 66, 74, 88, 100].map((h, i) => (
                 <motion.span
                   key={i}
-                  className="w-[3cqw] origin-bottom rounded-t-[1cqw] bg-[#114559]"
+                  className="w-[3cqw] origin-bottom rounded-t-[1cqw] bg-ink-900"
                   style={{ height: `${h * 0.14}cqw`, opacity: i === 6 ? 1 : 0.16 + i * 0.045 }}
                   initial={{ scaleY: 0 }}
                   animate={reduce || inView ? { scaleY: 1 } : undefined}
@@ -702,23 +606,6 @@ export function RewardsScreen() {
  * ================================================================== */
 
 export function BookScreen() {
-  const ref = useRef<HTMLDivElement>(null)
-  const inView = useInView(ref, { once: true, margin: '-10%' })
-  const reduce = useReducedMotion()
-  const on = reduce || inView
-  // The 4:30 slot "gets chosen" a beat after the screen settles, and the
-  // confirmation check answers it — the booking flow acting itself out.
-  const [picked, setPicked] = useState(false)
-  useEffect(() => {
-    if (!on) return
-    if (reduce) {
-      setPicked(true)
-      return
-    }
-    const t = window.setTimeout(() => setPicked(true), 950)
-    return () => window.clearTimeout(t)
-  }, [on, reduce])
-
   const days = [
     { d: 'M', n: 18 },
     { d: 'T', n: 19 },
@@ -731,7 +618,7 @@ export function BookScreen() {
   const slots = ['9:00', '10:30', '12:00', '1:30', '4:30', '6:00']
 
   return (
-    <div ref={ref} className="absolute inset-0 overflow-hidden bg-[#fbfbfd]">
+    <div className="absolute inset-0 overflow-hidden bg-[#fbfbfd]">
       <Island />
       <StatusBar />
       <AppHeader title="Book" />
@@ -743,7 +630,7 @@ export function BookScreen() {
             <div
               key={day.n}
               className={`flex h-[15cqw] w-[11.4cqw] flex-col items-center justify-center rounded-[4cqw] ${
-                i === 3 ? 'bg-[#114559] text-white' : 'bg-white text-ink-900 shadow-[0_1.5cqw_3cqw_-2cqw_rgba(0,0,0,0.14)]'
+                i === 3 ? 'bg-ink-900 text-white' : 'bg-white text-ink-900 shadow-[0_1.5cqw_3cqw_-2cqw_rgba(0,0,0,0.14)]'
               }`}
             >
               <span className={`text-[2.7cqw] font-medium ${i === 3 ? 'text-white/60' : 'text-ink-900/40'}`}>{day.d}</span>
@@ -757,51 +644,41 @@ export function BookScreen() {
         </p>
         <div className="grid grid-cols-3 gap-[2.6cqw]">
           {slots.map((s, i) => (
-            <motion.div
+            <div
               key={s}
-              initial={{ opacity: 0, y: 8 }}
-              animate={on ? { opacity: 1, y: 0 } : undefined}
-              transition={{ duration: 0.45, delay: 0.12 + i * 0.06, ease: [0.16, 1, 0.3, 1] }}
-              className={`flex h-[11cqw] items-center justify-center rounded-[3.6cqw] text-[3.6cqw] font-semibold tracking-[-0.015em] transition-colors duration-500 ${
-                i === 4 && picked
-                  ? 'bg-[#114559] text-white'
+              className={`flex h-[11cqw] items-center justify-center rounded-[3.6cqw] text-[3.6cqw] font-semibold tracking-[-0.015em] ${
+                i === 4
+                  ? 'bg-ink-900 text-white'
                   : i === 1
                     ? 'border border-black/[0.06] bg-white/60 text-ink-900/25 line-through'
                     : 'border border-black/[0.06] bg-white text-ink-900'
               }`}
             >
               {s}
-            </motion.div>
+            </div>
           ))}
         </div>
 
         <Card className="mt-[4.4cqw] p-[4.4cqw]">
           <div className="flex items-start gap-[3cqw]">
-            <div className="flex h-[11cqw] w-[11cqw] items-center justify-center rounded-[3.4cqw] bg-[#EAF2F4] text-[#114559]">
+            <div className="flex h-[11cqw] w-[11cqw] items-center justify-center rounded-[3.4cqw] bg-[#f2f2f5] text-ink-900">
               <Glyph name="sparkle" className="h-[5.6cqw] w-[5.6cqw]" />
             </div>
             <div className="grow">
               <p className="text-[3.8cqw] font-semibold tracking-[-0.015em] text-ink-900">Full interior detail</p>
               <p className="mt-[0.4cqw] text-[3cqw] text-ink-900/45">Thu 21 Aug · 4:30pm · 2h</p>
               <div className="mt-[2.2cqw] flex items-center gap-[1.6cqw]">
-                <span className="rounded-full bg-[#114559]/[0.08] px-[2.4cqw] py-[1cqw] text-[2.7cqw] font-semibold text-[#114559]">
+                <span className="rounded-full bg-ink-900/[0.05] px-[2.4cqw] py-[1cqw] text-[2.7cqw] font-semibold text-ink-900/65">
                   Saved card
                 </span>
-                <span className="rounded-full bg-[#114559]/[0.08] px-[2.4cqw] py-[1cqw] text-[2.7cqw] font-semibold text-[#114559]">
+                <span className="rounded-full bg-ink-900/[0.05] px-[2.4cqw] py-[1cqw] text-[2.7cqw] font-semibold text-ink-900/65">
                   −400 pts
                 </span>
               </div>
             </div>
           </div>
           <PrimaryButton className="mt-[4cqw]">
-            <motion.span
-              className="flex"
-              initial={{ scale: 0 }}
-              animate={picked ? { scale: 1 } : undefined}
-              transition={{ type: 'spring', stiffness: 420, damping: 16 }}
-            >
-              <Glyph name="check" className="h-[4.2cqw] w-[4.2cqw]" width={2.2} />
-            </motion.span>
+            <Glyph name="check" className="h-[4.2cqw] w-[4.2cqw]" width={2.2} />
             Confirm booking
           </PrimaryButton>
           <p className="mt-[2.4cqw] text-center text-[2.8cqw] font-medium text-ink-900/40">
@@ -815,7 +692,7 @@ export function BookScreen() {
             { icon: 'bell', n: 'Remind me the night before', d: 'On' },
           ].map((r) => (
             <div key={r.n} className="flex items-center gap-[3cqw] px-[4.2cqw] py-[3.2cqw]">
-              <div className="flex h-[9cqw] w-[9cqw] items-center justify-center rounded-[2.8cqw] bg-[#EAF2F4] text-[#114559]">
+              <div className="flex h-[9cqw] w-[9cqw] items-center justify-center rounded-[2.8cqw] bg-[#f2f2f5] text-ink-900">
                 <Glyph name={r.icon} className="h-[4.6cqw] w-[4.6cqw]" />
               </div>
               <p className="grow text-[3.4cqw] font-semibold tracking-[-0.015em] text-ink-900">{r.n}</p>
@@ -843,8 +720,8 @@ export function LockScreen() {
 
   const notes = [
     { t: 'Rain tomorrow — move your wash?', b: 'Two taps to reschedule. Free of charge.', time: 'now' },
-    { t: 'Your reward expires Sunday', b: 'A free interior refresh is waiting.', time: '2m' },
-    { t: "It's been 3 weeks", b: 'Your usual wash is one tap away.', time: '9m' },
+    { t: 'Your reward expires Sunday', b: 'A free drink is waiting for you.', time: '2m' },
+    { t: "It's been 3 weeks", b: 'Your usual is one tap away.', time: '9m' },
   ]
 
   return (
@@ -874,7 +751,7 @@ export function LockScreen() {
               transition={{ type: 'spring', stiffness: 190, damping: 24, delay: 0.25 + i * 0.16 }}
               className="flex items-start gap-[3cqw] rounded-[6cqw] border border-white/10 bg-white/[0.13] p-[3.4cqw] backdrop-blur-2xl"
             >
-              <ClientIcon className="h-[10cqw] w-[10cqw] shrink-0 rounded-[3cqw]" tone="light" />
+              <BrandIcon className="h-[10cqw] w-[10cqw] shrink-0 rounded-[3cqw]" tone="light" />
               <div className="min-w-0 grow pt-[0.4cqw]">
                 <div className="flex items-baseline justify-between gap-[2cqw]">
                   <span className="truncate text-[3.3cqw] font-semibold uppercase tracking-[0.1em] text-white/70">
@@ -910,19 +787,14 @@ export function LockScreen() {
  * ================================================================== */
 
 export function WalletScreen() {
-  const ref = useRef<HTMLDivElement>(null)
-  const inView = useInView(ref, { once: true, margin: '-10%' })
-  const reduce = useReducedMotion()
-  const on = reduce || inView
-
   return (
-    <div ref={ref} className="absolute inset-0 overflow-hidden bg-[#fbfbfd]">
+    <div className="absolute inset-0 overflow-hidden bg-[#fbfbfd]">
       <Island />
       <StatusBar />
       <AppHeader title="Checkout" />
 
       <div className="space-y-[3.4cqw] px-[5.5cqw]">
-        <div className="relative overflow-hidden rounded-[6cqw] bg-[#114559] p-[5cqw] text-white">
+        <div className="relative overflow-hidden rounded-[6cqw] bg-ink-900 p-[5cqw] text-white">
           <div
             className="absolute inset-0"
             style={{
@@ -937,7 +809,7 @@ export function WalletScreen() {
                 $48.20
               </p>
             </div>
-            <ClientIcon className="h-[10cqw] w-[10cqw] rounded-[3cqw]" tone="light" />
+            <BrandIcon className="h-[10cqw] w-[10cqw] rounded-[3cqw]" tone="light" />
           </div>
           <div className="relative mt-[5cqw] flex items-center justify-between">
             <span className="text-[3.2cqw] font-medium tracking-[0.16em] text-white/70">•••• 4417</span>
@@ -950,16 +822,11 @@ export function WalletScreen() {
         <Card className="p-[4.4cqw]">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[3.7cqw] font-semibold tracking-[-0.015em] text-ink-900">Shine Club membership</p>
-              <p className="mt-[0.4cqw] text-[3cqw] text-ink-900/45">$39/mo · renews 1 Sept</p>
+              <p className="text-[3.7cqw] font-semibold tracking-[-0.015em] text-ink-900">Insider membership</p>
+              <p className="mt-[0.4cqw] text-[3cqw] text-ink-900/45">$19/mo · renews 1 Sept</p>
             </div>
-            <div className="relative h-[7cqw] w-[12cqw] rounded-full bg-[#114559]">
-              <motion.span
-                className="absolute right-[0.8cqw] top-[0.8cqw] h-[5.4cqw] w-[5.4cqw] rounded-full bg-white"
-                initial={{ x: '-88%' }}
-                animate={on ? { x: '0%' } : undefined}
-                transition={{ type: 'spring', stiffness: 300, damping: 24, delay: 0.55 }}
-              />
+            <div className="relative h-[7cqw] w-[12cqw] rounded-full bg-ink-900">
+              <span className="absolute right-[0.8cqw] top-1/2 h-[5.4cqw] w-[5.4cqw] -translate-y-1/2 rounded-full bg-white" />
             </div>
           </div>
           <div className="mt-[3.4cqw] grid grid-cols-3 gap-[2.4cqw] border-t border-black/[0.06] pt-[3.4cqw] text-center">
@@ -969,9 +836,7 @@ export function WalletScreen() {
               { k: 'Since', v: 'Jan' },
             ].map((s) => (
               <div key={s.k}>
-                <p className="font-display text-[5cqw] font-semibold tracking-[-0.03em] text-ink-900">
-                  {s.k === 'Saved' ? <CountUp to={212} on={on} prefix="$" delay={0.7} duration={1.2} /> : s.v}
-                </p>
+                <p className="font-display text-[5cqw] font-semibold tracking-[-0.03em] text-ink-900">{s.v}</p>
                 <p className="mt-[0.4cqw] text-[2.7cqw] font-medium uppercase tracking-[0.12em] text-ink-900/40">{s.k}</p>
               </div>
             ))}
@@ -982,11 +847,11 @@ export function WalletScreen() {
           <p className="text-[2.9cqw] font-semibold uppercase tracking-[0.16em] text-ink-900/40">Add to order</p>
           <div className="mt-[2.8cqw] space-y-[2.6cqw]">
             {[
-              { icon: 'gift', n: 'Wash + wax bundle', d: 'Save $9.00', on: true },
-              { icon: 'clock', n: 'Priority slot', d: '+$5.00', on: false },
+              { icon: 'gift', n: 'Make it a bundle', d: 'Save $4.50', on: true },
+              { icon: 'truck', n: 'Priority delivery', d: '+$2.00', on: false },
             ].map((u) => (
               <div key={u.n} className="flex items-center gap-[3cqw]">
-                <div className="flex h-[9.6cqw] w-[9.6cqw] items-center justify-center rounded-[3cqw] bg-[#EAF2F4] text-[#114559]">
+                <div className="flex h-[9.6cqw] w-[9.6cqw] items-center justify-center rounded-[3cqw] bg-[#f2f2f5] text-ink-900">
                   <Glyph name={u.icon} className="h-[5cqw] w-[5cqw]" />
                 </div>
                 <div className="grow">
@@ -995,26 +860,15 @@ export function WalletScreen() {
                 </div>
                 <div
                   className={`flex h-[6.6cqw] w-[6.6cqw] items-center justify-center rounded-full ${
-                    u.on ? 'bg-[#114559] text-white' : 'border border-black/15 text-transparent'
+                    u.on ? 'bg-ink-900 text-white' : 'border border-black/15 text-transparent'
                   }`}
                 >
-                  {u.on ? (
-                    <motion.span
-                      className="flex"
-                      initial={{ scale: 0 }}
-                      animate={on ? { scale: 1 } : undefined}
-                      transition={{ type: 'spring', stiffness: 420, damping: 16, delay: 0.95 }}
-                    >
-                      <Glyph name="check" className="h-[3.6cqw] w-[3.6cqw]" width={2.4} />
-                    </motion.span>
-                  ) : (
-                    <Glyph name="check" className="h-[3.6cqw] w-[3.6cqw]" width={2.4} />
-                  )}
+                  <Glyph name="check" className="h-[3.6cqw] w-[3.6cqw]" width={2.4} />
                 </div>
               </div>
             ))}
           </div>
-          <PrimaryButton className="mt-[4cqw]">Pay $62.40</PrimaryButton>
+          <PrimaryButton className="mt-[4cqw]">Pay $12.40</PrimaryButton>
         </Card>
       </div>
 
