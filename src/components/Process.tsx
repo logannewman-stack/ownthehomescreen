@@ -97,7 +97,7 @@ function Journey() {
 
   return (
     <Section id="process" tone="mist">
-      <div ref={ref} className="relative" style={{ height: `${N * 92}svh` }}>
+      <div ref={ref} className="relative" style={{ height: `${N * 74}svh` }}>
         <div className="sticky top-0 flex h-[100svh] flex-col overflow-hidden pb-[max(4svh,24px)] pt-[72px]">
           {/* Header stays put while the world moves underneath it */}
           <div className="shell flex shrink-0 items-end justify-between gap-6">

@@ -130,7 +130,7 @@ export default function Showcase() {
 
         <div>
           {ITEMS.map((it) => (
-            <div key={it.title} className="flex h-[100svh] flex-col justify-center">
+            <div key={it.title} className="flex h-[88svh] flex-col justify-center">
               <Copy item={it} />
             </div>
           ))}
@@ -162,7 +162,7 @@ function MobileStage() {
   })
 
   return (
-    <div ref={ref} className="relative mt-8 lg:hidden" style={{ height: `${ITEMS.length * 100}svh` }}>
+    <div ref={ref} className="relative mt-8 lg:hidden" style={{ height: `${ITEMS.length * 82}svh` }}>
       {/*
        * The height budget runs bottom-up: the copy gets a fixed, reserved
        * block, the rail a fixed row, and the device flexes into whatever is

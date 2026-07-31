@@ -39,7 +39,7 @@ export default function Hero() {
   const cueOpacity = useTransform(p, [0, 0.06], [1, 0])
 
   return (
-    <div id="top" ref={ref} className="relative h-[260vh]">
+    <div id="top" ref={ref} className="relative h-[205vh]">
       <div className="sticky top-0 h-[100svh] overflow-hidden">
         {/* Text */}
         <motion.div

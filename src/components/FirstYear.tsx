@@ -79,7 +79,7 @@ function Cinema() {
 
   return (
     <section id="after-launch" data-nav="dark" className="relative bg-ink-800 text-white">
-      <div ref={ref} className="relative" style={{ height: `${N * 105}svh` }}>
+      <div ref={ref} className="relative" style={{ height: `${N * 84}svh` }}>
         <div className="sticky top-0 flex h-[100svh] flex-col overflow-hidden pb-[max(3.5svh,20px)] pt-[72px]">
           {/* One soft spotlight */}
           <div
