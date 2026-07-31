@@ -44,7 +44,7 @@ export default function Hero() {
         {/* Text */}
         <motion.div
           style={{ opacity: textOpacity, y: textY, scale: textScale, filter: textBlur }}
-          className={`shell absolute inset-x-0 top-[max(9.5vh,80px)] z-20 text-center ${
+          className={`shell absolute inset-x-0 top-[max(9.5vh,72px)] z-20 text-center sm:top-[max(9.5vh,80px)] ${
             ctaLive ? '' : 'pointer-events-none'
           }`}
         >
@@ -54,11 +54,11 @@ export default function Hero() {
             className="type-hero mx-auto mt-6 max-w-[16ch] text-balance text-ink-900"
             stagger={0.09}
           />
-          <p className="lede mx-auto mt-6 max-w-[46ch] text-balance">
-            We build your business its own app. Your icon lives on your customers&apos; phones, and
-            ordering or booking again takes one tap — so they come back more often.
+          <p className="lede mx-auto mt-5 max-w-[46ch] text-balance sm:mt-6">
+            We design and build the app your customers keep on their home screen. When coming back
+            takes one tap, they come back more often — that&apos;s the whole idea.
           </p>
-          <div className="mt-9 flex flex-wrap items-center justify-center gap-x-7 gap-y-4">
+          <div className="mt-7 flex flex-wrap items-center justify-center gap-x-7 gap-y-4 sm:mt-9">
             <Button size="lg">Book a strategy call</Button>
             <TextLink href="#results">See the numbers</TextLink>
           </div>
